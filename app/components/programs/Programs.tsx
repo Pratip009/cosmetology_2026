@@ -35,7 +35,7 @@ const programs = [
   {
     num: '03', name: 'Nail Technology', hours: '300', junior: '150 hrs', senior: '150 hrs',
     theory: 120, practical: 180,
-    image: 'https://plus.unsplash.com/premium_photo-1661290231745-15f1ed6fea88?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://plus.unsplash.com/premium_photo-1661290231745-15f1ed6fea88?q=80&w=1170&auto=format&fit=crop',
     desc: 'Manicuring, pedicuring, nail tips & extensions, nail wraps, nail gels, sculptured nails, nail art, hair removal. First 150 hrs: pre-clinical. Mock State Board Exam included.',
     outline: [
       { topic: 'Manicuring & Pedicuring', theory: 10, practical: 45, total: 55 },
@@ -83,404 +83,204 @@ const Programs = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+        .font-dm        { font-family: 'DM Sans', sans-serif; }
 
-        .ps {
-          font-family: 'DM Sans', sans-serif;
-          background: #0A0908;
-          padding: 80px 24px 120px;
-        }
+        /* Card hover/open states */
+        .pc { transition: border-color 0.3s, transform 0.25s cubic-bezier(0.23,1,0.32,1), box-shadow 0.3s; }
+        .pc:hover  { border-color: #C4973A; transform: translateY(-2px); box-shadow: 0 20px 60px rgba(196,151,58,0.12); }
+        .pc.open   { border-color: #C4973A; box-shadow: 0 24px 80px rgba(196,151,58,0.15); }
 
-        .ps-inner {
-          max-width: 1080px;
-          margin: 0 auto;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
+        /* Image zoom */
+        .pc-img-inner { transition: transform 0.6s cubic-bezier(0.23,1,0.32,1), filter 0.4s; filter: brightness(0.45) saturate(0.6); }
+        .pc:hover .pc-img-inner, .pc.open .pc-img-inner { transform: scale(1.07); filter: brightness(0.6) saturate(0.8); }
 
-        /* ── CARD ── */
-        .pc {
-          position: relative;
-          border-radius: 16px;
-          overflow: hidden;
-          cursor: pointer;
-          outline: none;
-          border: 1.5px solid #1E1C17;
-          transition: border-color 0.3s, transform 0.25s cubic-bezier(0.23,1,0.32,1), box-shadow 0.3s;
-          background: #0F0E0B;
-        }
-
-        .pc:hover {
-          border-color: #C4973A;
-          transform: translateY(-2px);
-          box-shadow: 0 20px 60px rgba(196,151,58,0.12);
-        }
-
-        .pc.open {
-          border-color: #C4973A;
-          box-shadow: 0 24px 80px rgba(196,151,58,0.15);
-        }
-
-        /* ── TRIGGER ROW ── */
-        .pc-trigger {
-          display: grid;
-          grid-template-columns: 200px 1fr;
-          min-height: 140px;
-          position: relative;
-        }
-
-        @media (max-width: 640px) {
-          .pc-trigger { grid-template-columns: 120px 1fr; min-height: 120px; }
-        }
-
-        /* image */
-        .pc-img {
-          position: relative;
-          overflow: hidden;
-        }
-        .pc-img img {
-          width: 100%; height: 100%;
-          object-fit: cover;
-          transition: transform 0.6s cubic-bezier(0.23,1,0.32,1), filter 0.4s;
-          filter: brightness(0.45) saturate(0.6);
-        }
-        .pc:hover .pc-img img, .pc.open .pc-img img {
-          transform: scale(1.07);
-          filter: brightness(0.6) saturate(0.8);
-        }
-        .pc-img-fade {
-          position: absolute; inset: 0;
-          background: linear-gradient(to right, transparent 50%, #0F0E0B);
-        }
-        .pc-num {
-          position: absolute;
-          top: 14px; left: 16px;
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 12px;
-          letter-spacing: 0.12em;
-          color: #C4973A;
-          font-weight: 300;
-        }
-
-        /* main body of trigger */
-        .pc-body {
-          padding: 24px 28px 24px 24px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          gap: 12px;
-        }
-
-        .pc-top {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          gap: 16px;
-        }
-
-        .pc-name {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: clamp(26px, 3.5vw, 36px);
-          font-weight: 400;
-          color: #EDE8DF;
-          line-height: 1;
-          letter-spacing: 0.01em;
-          transition: color 0.2s;
-        }
+        /* Name colour */
+        .pc-name { transition: color 0.2s; }
         .pc:hover .pc-name, .pc.open .pc-name { color: #F8F0E3; }
 
-        /* pill toggle button */
-        .pc-pill {
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: #1A1812;
-          border: 1px solid #2E2B22;
-          border-radius: 40px;
-          padding: 8px 16px 8px 12px;
-          font-size: 12px;
-          font-weight: 500;
-          color: #6A6358;
-          letter-spacing: 0.04em;
-          transition: background 0.25s, border-color 0.25s, color 0.25s;
-          white-space: nowrap;
-          pointer-events: none;
-        }
-        .pc:hover .pc-pill {
-          background: #221F16;
-          border-color: #C4973A55;
-          color: #C4973A;
-        }
-        .pc.open .pc-pill {
-          background: #C4973A;
-          border-color: #C4973A;
-          color: #0A0908;
-        }
-        .pc-pill-icon {
-          width: 18px; height: 18px;
-          border-radius: 50%;
-          display: flex; align-items: center; justify-content: center;
-          background: #2E2B22;
-          transition: background 0.25s;
-          flex-shrink: 0;
-        }
-        .pc:hover .pc-pill-icon { background: #C4973A22; }
-        .pc.open .pc-pill-icon { background: #0A090822; }
+        /* Pill states */
+        .pc-pill { transition: background 0.25s, border-color 0.25s, color 0.25s; pointer-events: none; }
+        .pc:hover .pc-pill  { background: #221F16; border-color: rgba(196,151,58,0.33); color: #C4973A; }
+        .pc.open  .pc-pill  { background: #C4973A; border-color: #C4973A; color: #0A0908; }
+        .pc-pill-icon { transition: background 0.25s; }
+        .pc:hover .pc-pill-icon { background: rgba(196,151,58,0.13); }
+        .pc.open  .pc-pill-icon { background: rgba(10,9,8,0.13); }
 
-        .pc-bottom {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          flex-wrap: wrap;
-        }
-
-        .pc-hrs {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 11px;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #C4973A;
-          font-weight: 500;
-        }
-
-        .pc-dot {
-          width: 3px; height: 3px;
-          border-radius: 50%;
-          background: #3A3530;
-        }
-
-        .pc-phase {
-          font-size: 12px;
-          color: #4A4540;
-          font-weight: 300;
-        }
-
-        .pc-stats {
-          margin-left: auto;
-          display: flex;
-          gap: 20px;
-        }
-
-        @media (max-width: 500px) {
-          .pc-stats { display: none; }
-        }
-
-        .pc-stat {
-          text-align: right;
-        }
-        .pc-stat-n {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 20px;
-          font-weight: 300;
-          color: #8A7E72;
-          line-height: 1;
-          transition: color 0.2s;
-        }
+        /* Stat numbers */
+        .pc-stat-n { transition: color 0.2s; }
         .pc:hover .pc-stat-n, .pc.open .pc-stat-n { color: #C4973A; }
-        .pc-stat-l {
-          font-size: 9px;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #3A3530;
-          margin-top: 2px;
-        }
 
-        /* ── EXPANDED PANEL ── */
-        .pc-panel {
-          max-height: 0;
-          overflow: hidden;
-          transition: max-height 0.55s cubic-bezier(0.23,1,0.32,1);
-        }
-        .pc-panel.open { max-height: 800px; }
+        /* Expand panel */
+        .pc-panel { max-height: 0; overflow: hidden; transition: max-height 0.55s cubic-bezier(0.23,1,0.32,1); }
+        .pc-panel.open { max-height: 900px; }
 
-        .pc-panel-inner {
-          border-top: 1px solid #1E1C17;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0;
-        }
-
-        @media (max-width: 700px) {
-          .pc-panel-inner { grid-template-columns: 1fr; }
-          .pc-panel-side { display: none; }
-        }
-
-        .pc-panel-side {
-          position: relative;
-          overflow: hidden;
-          min-height: 280px;
-          border-right: 1px solid #1E1C17;
-        }
-        .pc-panel-side img {
-          width: 100%; height: 100%;
-          object-fit: cover;
-          filter: brightness(0.35) saturate(0.5);
-        }
-        .pc-panel-side-overlay {
-          position: absolute; inset: 0;
-          background: linear-gradient(135deg, #0F0E0B44, #0F0E0B88);
-        }
-        .pc-panel-side-text {
-          position: absolute;
-          bottom: 28px; left: 28px; right: 28px;
-        }
-        .pc-panel-side-label {
-          font-size: 10px;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: #C4973A;
-          margin-bottom: 10px;
-          font-weight: 500;
-        }
-        .pc-panel-desc {
-          font-size: 14px;
-          line-height: 1.75;
-          color: #9A8E82;
-          font-weight: 300;
-        }
-
-        .pc-panel-table-wrap {
-          padding: 28px 32px 36px;
-          overflow-x: auto;
-        }
-
-        .pc-table {
-          width: 100%;
-          border-collapse: collapse;
-          font-size: 13px;
-        }
-        .pc-table thead tr {
-          border-bottom: 1px solid #1E1C17;
-        }
-        .pc-table th {
-          padding: 0 0 10px;
-          font-size: 9px;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: #3A3530;
-          font-weight: 500;
-          text-align: left;
-        }
-        .pc-table th:not(:first-child) { text-align: right; }
-        .pc-table tbody tr {
-          border-bottom: 1px solid #161410;
-          transition: background 0.15s;
-        }
+        /* Table row hover */
+        .pc-table tbody tr { transition: background 0.15s; }
         .pc-table tbody tr:hover { background: #14120E; }
-        .pc-table td {
-          padding: 11px 0;
-          font-size: 13px;
-          color: #4E4842;
-          font-weight: 300;
-        }
-        .pc-table td:first-child { color: #7A6E64; padding-right: 16px; }
-        .pc-table td:not(:first-child) { text-align: right; }
-        .pc-table .td-t { color: #C4973A; font-weight: 500; }
       `}</style>
 
-      <section className="ps">
-        <div className="ps-inner">
+      <section className="font-dm bg-[#0A0908] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+        <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:gap-4">
+
           {programs.map((prog, i) => {
             const isOpen = expanded === i;
             return (
               <div
                 key={i}
-                className={`pc${isOpen ? ' open' : ''}`}
+                className={`pc relative cursor-pointer overflow-hidden rounded-xl border border-[#1E1C17] bg-[#0F0E0B] outline-none sm:rounded-2xl${isOpen ? ' open' : ''}`}
                 onClick={() => setExpanded(isOpen ? null : i)}
                 role="button"
                 tabIndex={0}
                 aria-expanded={isOpen}
                 onKeyDown={e => e.key === 'Enter' && setExpanded(isOpen ? null : i)}
               >
-                {/* ── TRIGGER ── */}
-                <div className="pc-trigger">
-                  <div className="pc-img">
-                    <img src={prog.image} alt={prog.name} />
-                    <div className="pc-img-fade" />
-                    <span className="pc-num">{prog.num}</span>
+                {/* ── TRIGGER ROW ── */}
+                <div className="grid min-h-[110px] grid-cols-[90px_1fr] sm:min-h-[130px] sm:grid-cols-[150px_1fr] md:grid-cols-[200px_1fr]">
+
+                  {/* Image */}
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={prog.image}
+                      alt={prog.name}
+                      className="pc-img-inner absolute inset-0 h-full w-full object-cover"
+                    />
+                    {/* Fade right */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0F0E0B]" />
+                    {/* Number badge */}
+                    <span className="font-cormorant absolute left-3 top-3 text-[11px] font-light tracking-widest text-[#C4973A] sm:left-4 sm:top-3.5 sm:text-xs">
+                      {prog.num}
+                    </span>
                   </div>
 
-                  <div className="pc-body">
-                    <div className="pc-top">
-                      <h3 className="pc-name">{prog.name}</h3>
-                      <div className="pc-pill">
-                        <span className="pc-pill-icon">
+                  {/* Body */}
+                  <div className="flex flex-col justify-between gap-2 p-4 sm:gap-3 sm:p-5 md:p-6">
+
+                    {/* Top row: name + pill */}
+                    <div className="flex items-start justify-between gap-3">
+                      <h3
+                        className="pc-name font-cormorant leading-none text-[#EDE8DF]"
+                        style={{ fontSize: 'clamp(22px, 3.5vw, 36px)', fontWeight: 400, letterSpacing: '0.01em' }}
+                      >
+                        {prog.name}
+                      </h3>
+
+                      {/* Pill — label hidden on xs */}
+                      <div
+                        className="pc-pill flex shrink-0 items-center gap-1.5 rounded-full border border-[#2E2B22] bg-[#1A1812] px-2.5 py-1.5 text-[11px] font-medium tracking-wide text-[#6A6358] sm:gap-2 sm:px-3.5 sm:py-2 sm:text-xs"
+                      >
+                        <span className="pc-pill-icon flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#2E2B22] sm:h-[18px] sm:w-[18px]">
                           {isOpen
-                            ? <Minus size={11} strokeWidth={2.5} />
-                            : <Plus size={11} strokeWidth={2.5} />
+                            ? <Minus size={9} strokeWidth={2.5} />
+                            : <Plus size={9} strokeWidth={2.5} />
                           }
                         </span>
-                        {isOpen ? 'Close' : 'View Curriculum'}
+                        <span className="hidden sm:inline">{isOpen ? 'Close' : 'View Curriculum'}</span>
                       </div>
                     </div>
 
-                    <div className="pc-bottom">
-                      <span className="pc-hrs">
-                        <Clock size={11} strokeWidth={2} />
+                    {/* Bottom row: hours · phases · stats */}
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+
+                      {/* Hours */}
+                      <span className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-widest text-[#C4973A] sm:text-[11px]">
+                        <Clock size={10} strokeWidth={2} />
                         {prog.hours} hrs
                       </span>
-                      <span className="pc-dot" />
-                      <span className="pc-phase">{prog.junior}</span>
-                      <span className="pc-dot" />
-                      <span className="pc-phase">{prog.senior}</span>
 
-                      <div className="pc-stats">
-                        <div className="pc-stat">
-                          <div className="pc-stat-n">{prog.theory}</div>
-                          <div className="pc-stat-l">Theory</div>
-                        </div>
-                        <div className="pc-stat">
-                          <div className="pc-stat-n">{prog.practical}</div>
-                          <div className="pc-stat-l">Practical</div>
-                        </div>
+                      {/* Dot */}
+                      <span className="h-[3px] w-[3px] rounded-full bg-[#3A3530]" />
+
+                      {/* Phases — collapse on very small screens */}
+                      <span className="hidden text-[11px] font-light text-[#4A4540] xs:inline sm:text-xs">{prog.junior}</span>
+                      <span className="hidden h-[3px] w-[3px] rounded-full bg-[#3A3530] xs:inline-block" />
+                      <span className="hidden text-[11px] font-light text-[#4A4540] xs:inline sm:text-xs">{prog.senior}</span>
+
+                      {/* Theory / Practical stats — push to right */}
+                      <div className="ml-auto hidden items-center gap-4 sm:flex sm:gap-5">
+                        {[{ n: prog.theory, l: 'Theory' }, { n: prog.practical, l: 'Practical' }].map(s => (
+                          <div key={s.l} className="text-right">
+                            <div className="pc-stat-n font-cormorant text-lg font-light leading-none text-[#8A7E72] sm:text-xl">
+                              {s.n}
+                            </div>
+                            <div className="mt-0.5 text-[9px] uppercase tracking-widest text-[#3A3530]">{s.l}</div>
+                          </div>
+                        ))}
                       </div>
                     </div>
+
                   </div>
                 </div>
 
                 {/* ── EXPANDED PANEL ── */}
                 <div className={`pc-panel${isOpen ? ' open' : ''}`}>
-                  <div className="pc-panel-inner">
-                    <div className="pc-panel-side">
-                      <img src={prog.image} alt="" aria-hidden />
-                      <div className="pc-panel-side-overlay" />
-                      <div className="pc-panel-side-text">
-                        <p className="pc-panel-side-label">About this Program</p>
-                        <p className="pc-panel-desc">{prog.desc}</p>
-                      </div>
-                    </div>
+                  <div className="border-t border-[#1E1C17]">
 
-                    <div className="pc-panel-table-wrap">
-                      <table className="pc-table">
-                        <thead>
-                          <tr>
-                            <th>Topic</th>
-                            <th>Theory</th>
-                            <th>Practical</th>
-                            <th>Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {prog.outline.map((row, j) => (
-                            <tr key={j}>
-                              <td>{row.topic}</td>
-                              <td>{row.theory}</td>
-                              <td>{row.practical}</td>
-                              <td className="td-t">{row.total}</td>
+                    {/* Two-col on md+, stacked below */}
+                    <div className="grid grid-cols-1 md:grid-cols-2">
+
+                      {/* Left: image + description — hidden on mobile, shown on md+ */}
+                      <div className="relative hidden min-h-[260px] border-r border-[#1E1C17] md:block lg:min-h-[300px]">
+                        <img
+                          src={prog.image}
+                          alt=""
+                          aria-hidden
+                          className="absolute inset-0 h-full w-full object-cover"
+                          style={{ filter: 'brightness(0.35) saturate(0.5)' }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#0F0E0B44] to-[#0F0E0B88]" />
+                        <div className="absolute bottom-6 left-6 right-6 lg:bottom-7 lg:left-7 lg:right-7">
+                          <p className="mb-2.5 text-[10px] font-medium uppercase tracking-[0.2em] text-[#C4973A]">
+                            About this Program
+                          </p>
+                          <p className="text-sm font-light leading-relaxed text-[#9A8E82]">{prog.desc}</p>
+                        </div>
+                      </div>
+
+                      {/* Mobile-only: description block above table */}
+                      <div className="border-b border-[#1E1C17] bg-[#0C0B09] px-4 py-5 md:hidden sm:px-6">
+                        <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.2em] text-[#C4973A]">
+                          About this Program
+                        </p>
+                        <p className="text-[13px] font-light leading-relaxed text-[#9A8E82]">{prog.desc}</p>
+                      </div>
+
+                      {/* Right: curriculum table */}
+                      <div className="overflow-x-auto px-4 pb-8 pt-6 sm:px-6 md:px-7 md:pb-9 md:pt-7">
+                        <table className="pc-table w-full border-collapse text-[13px]">
+                          <thead>
+                            <tr className="border-b border-[#1E1C17]">
+                              {['Topic', 'Theory', 'Practical', 'Total'].map((h, hi) => (
+                                <th
+                                  key={h}
+                                  className={`pb-2.5 text-[9px] font-medium uppercase tracking-[0.18em] text-[#3A3530] ${hi === 0 ? 'text-left' : 'text-right'}`}
+                                >
+                                  {h}
+                                </th>
+                              ))}
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {prog.outline.map((row, j) => (
+                              <tr key={j} className="border-b border-[#161410]">
+                                <td className="py-2.5 pr-4 text-left text-[#7A6E64]">{row.topic}</td>
+                                <td className="py-2.5 text-right font-light text-[#4E4842]">{row.theory}</td>
+                                <td className="py-2.5 text-right font-light text-[#4E4842]">{row.practical}</td>
+                                <td className="py-2.5 text-right font-medium text-[#C4973A]">{row.total}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
                     </div>
                   </div>
                 </div>
+
               </div>
             );
           })}
+
         </div>
       </section>
     </>

@@ -41,37 +41,8 @@ const TuitionTable = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
-        .tt-section {
-          background: #F9F6F1;
-          padding: 110px 0 120px;
-          font-family: 'DM Sans', sans-serif;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .tt-header {
-          padding: 0 64px;
-          margin-bottom: 56px;
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          gap: 32px;
-          flex-wrap: wrap;
-        }
-
-        @media (max-width: 640px) { .tt-header { padding: 0 24px; } }
-
-        .tt-eyebrow {
-          font-size: 10px;
-          letter-spacing: 0.26em;
-          text-transform: uppercase;
-          color: #C4973A;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 14px;
-        }
+        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+        .font-dm        { font-family: 'DM Sans', sans-serif; }
 
         .tt-eyebrow::before {
           content: '';
@@ -79,269 +50,232 @@ const TuitionTable = () => {
           width: 24px;
           height: 1px;
           background: #C4973A;
+          flex-shrink: 0;
         }
 
-        .tt-h2 {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: clamp(40px, 5vw, 60px);
-          font-weight: 300;
-          line-height: 1;
-          color: #181410;
-          letter-spacing: -0.01em;
-          margin: 0;
-        }
-
-        .tt-h2 em { font-style: italic; color: #9B7A52; }
-
-        .tt-note {
-          font-size: 12px;
-          color: #B0A090;
-          font-weight: 300;
-          font-style: italic;
-          align-self: flex-end;
-          padding-bottom: 4px;
-          max-width: 240px;
-          line-height: 1.6;
-        }
-
-        /* table wrapper */
-        .tt-wrap {
-          width: 100%;
-          overflow-x: auto;
-        }
-
-        .tt-table {
-          width: 100%;
-          border-collapse: collapse;
-          min-width: 800px;
-        }
-
-        /* thead */
-        .tt-table thead tr {
-          border-bottom: 1px solid #E4DDD4;
-        }
-
-        .tt-table th {
-          padding: 0 20px 16px;
-          font-size: 9px;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: #C0B0A0;
-          font-weight: 500;
-          text-align: left;
-          white-space: nowrap;
-        }
-
-        .tt-table th:first-child { padding-left: 64px; }
-        .tt-table th:last-child  { padding-right: 64px; text-align: right; }
-        .tt-table th.right { text-align: right; }
-        .tt-table th.center { text-align: center; }
-
-        /* tbody rows */
-        .tt-row {
-          border-bottom: 1px solid #EDE8E1;
-          transition: background 0.2s;
-          cursor: default;
-          position: relative;
-        }
-
+        /* Table row hover */
+        .tt-row { transition: background 0.2s; }
         .tt-row.active { background: #FFFFFF; }
 
-        .tt-row td {
-          padding: 0 20px;
-          vertical-align: middle;
-        }
-
-        .tt-row td:first-child { padding-left: 64px; }
-        .tt-row td:last-child  { padding-right: 64px; }
-
-        /* program name cell */
-        .tt-name-cell {
-          display: flex;
-          align-items: center;
-          gap: 18px;
-          padding: 28px 0;
-        }
-
-        .tt-thumb {
-          width: 60px;
-          height: 60px;
-          border-radius: 12px;
-          overflow: hidden;
-          flex-shrink: 0;
-          position: relative;
-          border: 1px solid #EDE8E1;
-          transition: transform 0.3s cubic-bezier(0.23,1,0.32,1);
-        }
-
+        /* Thumb zoom */
+        .tt-thumb { transition: transform 0.3s cubic-bezier(0.23,1,0.32,1), border-color 0.3s, box-shadow 0.3s; }
         .tt-row.active .tt-thumb {
           transform: scale(1.06);
-          border-color: #C4973A55;
+          border-color: rgba(196,151,58,0.33);
           box-shadow: 0 8px 24px rgba(196,151,58,0.15);
         }
+        .tt-thumb img { transition: filter 0.3s; filter: saturate(0.7) brightness(0.95); }
+        .tt-row.active .tt-thumb img { filter: saturate(1) brightness(1); }
 
-        .tt-thumb img {
-          width: 100%; height: 100%;
-          object-fit: cover;
-          filter: saturate(0.7) brightness(0.95);
-          transition: filter 0.3s;
-        }
+        /* Name colour */
+        .tt-name { transition: color 0.2s; }
+        .tt-row.active .tt-name { color: #8B6830 !important; }
+        .tt-tuition { transition: color 0.2s; }
+        .tt-row.active .tt-tuition { color: #8B6830 !important; }
 
-        .tt-row.active .tt-thumb img {
-          filter: saturate(1) brightness(1);
-        }
-
-        .tt-name-info {}
-
-        .tt-name {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 22px;
-          font-weight: 400;
-          color: #1A1410;
-          line-height: 1;
-          letter-spacing: 0.01em;
-          transition: color 0.2s;
-        }
-
-        .tt-row.active .tt-name { color: #8B6830; }
-
-        .tt-desc {
-          font-size: 12px;
-          color: #B0A090;
-          font-weight: 300;
-          margin-top: 4px;
-          letter-spacing: 0.02em;
-        }
-
-        /* data cells */
-        .tt-hours {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 22px;
-          font-weight: 300;
-          color: #C4973A;
-          text-align: center;
-          letter-spacing: -0.01em;
-        }
-
-        .tt-week {
-          font-size: 13px;
-          color: #8A7E72;
-          font-weight: 300;
-          text-align: center;
-          white-space: nowrap;
-        }
-
-        .tt-money {
-          font-size: 13px;
-          color: #8A7E72;
-          font-weight: 300;
-          text-align: right;
-        }
-
-        .tt-tuition {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 26px;
-          font-weight: 400;
-          color: #1A1410;
-          text-align: right;
-          letter-spacing: -0.01em;
-          white-space: nowrap;
-          transition: color 0.2s;
-        }
-
-        .tt-row.active .tt-tuition { color: #8B6830; }
-
-        /* floating preview image */
-        .tt-preview {
-          position: fixed;
-          width: 220px;
-          height: 160px;
-          border-radius: 16px;
-          overflow: hidden;
-          pointer-events: none;
-          z-index: 50;
-          opacity: 0;
-          transform: scale(0.92) translateY(8px);
-          transition: opacity 0.25s, transform 0.3s cubic-bezier(0.23,1,0.32,1);
-          box-shadow: 0 24px 60px rgba(0,0,0,0.18);
-          border: 1px solid rgba(255,255,255,0.6);
-        }
-
-        .tt-preview.visible {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
-
-        .tt-preview img {
-          width: 100%; height: 100%;
-          object-fit: cover;
-        }
-
-        .tt-preview-label {
-          position: absolute;
-          bottom: 0; left: 0; right: 0;
-          background: rgba(26,20,16,0.7);
-          backdrop-filter: blur(4px);
-          padding: 10px 14px;
-          font-size: 12px;
-          font-weight: 500;
-          color: rgba(255,255,255,0.9);
-          letter-spacing: 0.04em;
-        }
+        /* Mobile card hover */
+        .tt-card { transition: box-shadow 0.2s, border-color 0.2s; }
+        .tt-card.active { border-color: rgba(196,151,58,0.5) !important; box-shadow: 0 8px 32px rgba(196,151,58,0.1); }
+        .tt-card.active .tt-thumb { transform: scale(1.04); border-color: rgba(196,151,58,0.33); }
+        .tt-card.active .tt-thumb img { filter: saturate(1) brightness(1); }
+        .tt-card.active .tt-name { color: #8B6830 !important; }
       `}</style>
 
-      <section className="tt-section">
-        <div className="tt-header">
+      <section className="font-dm relative overflow-hidden bg-[#F9F6F1] py-20 sm:py-24 lg:py-28">
+
+        {/* ── Header ── */}
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-6 px-5 sm:mb-14 sm:px-10 lg:px-16">
           <div>
-            <p className="tt-eyebrow">Investment</p>
-            <h2 className="tt-h2">Tuition &amp; <em>Fees</em></h2>
+            <p className="tt-eyebrow mb-3 flex items-center gap-2.5 text-[10px] font-medium uppercase tracking-[0.26em] text-[#C4973A]">
+              Investment
+            </p>
+            <h2
+              className="font-cormorant m-0 leading-none tracking-[-0.01em] text-[#181410]"
+              style={{ fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 300 }}
+            >
+              Tuition &amp; <em className="italic text-[#9B7A52]">Fees</em>
+            </h2>
           </div>
-          <p className="tt-note">* Figures shown are approximate. Contact us for current pricing.</p>
+          <p className="max-w-[240px] self-end pb-1 text-[12px] font-light italic leading-relaxed text-[#B0A090]">
+            * Figures shown are approximate. Contact us for current pricing.
+          </p>
         </div>
 
-        <div className="tt-wrap">
-          <table className="tt-table">
+        {/* ══════════════════════════════════════
+            DESKTOP TABLE  (lg+)
+        ══════════════════════════════════════ */}
+        <div className="hidden overflow-x-auto lg:block">
+          <table className="w-full border-collapse" style={{ minWidth: '860px' }}>
             <thead>
-              <tr>
-                <th>Program</th>
-                <th className="center">Hours</th>
-                <th className="center">Full-Time</th>
-                <th className="center">Part-Time</th>
-                <th className="right">Registration</th>
-                <th className="right">Kit</th>
-                <th className="right">Tuition</th>
+              <tr className="border-b border-[#E4DDD4]">
+                {[
+                  { label: 'Program',      cls: 'text-left pl-16'  },
+                  { label: 'Hours',        cls: 'text-center'      },
+                  { label: 'Full-Time',    cls: 'text-center'      },
+                  { label: 'Part-Time',    cls: 'text-center'      },
+                  { label: 'Registration', cls: 'text-right'       },
+                  { label: 'Kit',          cls: 'text-right'       },
+                  { label: 'Tuition',      cls: 'text-right pr-16' },
+                ].map(h => (
+                  <th
+                    key={h.label}
+                    className={`pb-4 text-[9px] font-medium uppercase tracking-[0.22em] whitespace-nowrap text-[#C0B0A0] px-5 ${h.cls}`}
+                  >
+                    {h.label}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {programs.map((p, i) => (
                 <tr
                   key={i}
-                  className={`tt-row${hovered === i ? ' active' : ''}`}
+                  className={`tt-row border-b border-[#EDE8E1] cursor-default${hovered === i ? ' active' : ''}`}
                   onMouseEnter={() => setHovered(i)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <td>
-                    <div className="tt-name-cell">
-                      <div className="tt-thumb">
-                        <img src={p.image} alt={p.name} />
+                  {/* Program name */}
+                  <td className="py-0 pl-16 pr-5">
+                    <div className="flex items-center gap-4 py-6">
+                      <div className="tt-thumb h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-[#EDE8E1]">
+                        <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
                       </div>
-                      <div className="tt-name-info">
-                        <div className="tt-name">{p.name}</div>
-                        <div className="tt-desc">{p.desc}</div>
+                      <div>
+                        <div className="tt-name font-cormorant text-xl leading-none tracking-[0.01em] text-[#1A1410]">
+                          {p.name}
+                        </div>
+                        <div className="mt-1 text-[12px] font-light tracking-wide text-[#B0A090]">{p.desc}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="tt-hours">{p.hours.toLocaleString()}</td>
-                  <td className="tt-week">{p.fullTime}</td>
-                  <td className="tt-week">{p.partTime}</td>
-                  <td className="tt-money">{p.reg}</td>
-                  <td className="tt-money">{p.kit}</td>
-                  <td className="tt-tuition">{p.tuition}</td>
+                  {/* Hours */}
+                  <td className="px-5 text-center font-cormorant text-xl font-light text-[#C4973A] tracking-[-0.01em]">
+                    {p.hours.toLocaleString()}
+                  </td>
+                  {/* Full-time */}
+                  <td className="px-5 text-center text-[13px] font-light text-[#8A7E72] whitespace-nowrap">{p.fullTime}</td>
+                  {/* Part-time */}
+                  <td className="px-5 text-center text-[13px] font-light text-[#8A7E72] whitespace-nowrap">{p.partTime}</td>
+                  {/* Reg */}
+                  <td className="px-5 text-right text-[13px] font-light text-[#8A7E72]">{p.reg}</td>
+                  {/* Kit */}
+                  <td className="px-5 text-right text-[13px] font-light text-[#8A7E72]">{p.kit}</td>
+                  {/* Tuition */}
+                  <td className="tt-tuition py-0 pl-5 pr-16 text-right font-cormorant text-2xl font-normal leading-none tracking-[-0.01em] text-[#1A1410] whitespace-nowrap">
+                    {p.tuition}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        {/* ══════════════════════════════════════
+            TABLET TABLE  (sm–lg): fewer cols,
+            horizontal scroll as last resort
+        ══════════════════════════════════════ */}
+        <div className="hidden overflow-x-auto sm:block lg:hidden">
+          <table className="w-full border-collapse" style={{ minWidth: '560px' }}>
+            <thead>
+              <tr className="border-b border-[#E4DDD4]">
+                {[
+                  { label: 'Program',   cls: 'text-left pl-10'  },
+                  { label: 'Hours',     cls: 'text-center'      },
+                  { label: 'Schedule',  cls: 'text-center'      },
+                  { label: 'Kit',       cls: 'text-right'       },
+                  { label: 'Tuition',   cls: 'text-right pr-10' },
+                ].map(h => (
+                  <th key={h.label} className={`pb-3.5 text-[9px] font-medium uppercase tracking-[0.22em] whitespace-nowrap text-[#C0B0A0] px-4 ${h.cls}`}>
+                    {h.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {programs.map((p, i) => (
+                <tr
+                  key={i}
+                  className={`tt-row border-b border-[#EDE8E1] cursor-default${hovered === i ? ' active' : ''}`}
+                  onMouseEnter={() => setHovered(i)}
+                  onMouseLeave={() => setHovered(null)}
+                >
+                  <td className="py-0 pl-10 pr-4">
+                    <div className="flex items-center gap-3.5 py-5">
+                      <div className="tt-thumb h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[#EDE8E1]">
+                        <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
+                      </div>
+                      <div>
+                        <div className="tt-name font-cormorant text-[19px] leading-none text-[#1A1410]">{p.name}</div>
+                        <div className="mt-0.5 text-[11px] font-light text-[#B0A090]">{p.desc}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-4 text-center font-cormorant text-lg font-light text-[#C4973A]">
+                    {p.hours.toLocaleString()}
+                  </td>
+                  {/* Merged schedule col */}
+                  <td className="px-4 text-center">
+                    <div className="text-[12px] font-light text-[#8A7E72] whitespace-nowrap">{p.fullTime} FT</div>
+                    <div className="text-[11px] font-light text-[#C0B0A0] whitespace-nowrap">{p.partTime} PT</div>
+                  </td>
+                  <td className="px-4 text-right text-[13px] font-light text-[#8A7E72]">{p.kit}</td>
+                  <td className="tt-tuition py-0 pl-4 pr-10 text-right font-cormorant text-xl font-normal leading-none text-[#1A1410] whitespace-nowrap">
+                    {p.tuition}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* ══════════════════════════════════════
+            MOBILE CARDS  (< sm)
+        ══════════════════════════════════════ */}
+        <div className="flex flex-col gap-3 px-5 sm:hidden">
+          {programs.map((p, i) => (
+            <div
+              key={i}
+              className={`tt-card overflow-hidden rounded-2xl border border-[#EDE8E1] bg-white${hovered === i ? ' active' : ''}`}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onTouchStart={() => setHovered(i)}
+              onTouchEnd={() => setHovered(null)}
+            >
+              {/* Card top: image + name + tuition */}
+              <div className="flex items-center gap-4 border-b border-[#EDE8E1] px-4 py-4">
+                <div className="tt-thumb h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-[#EDE8E1]">
+                  <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="tt-name font-cormorant text-[22px] leading-none text-[#1A1410]">{p.name}</div>
+                  <div className="mt-0.5 text-[11px] font-light text-[#B0A090]">{p.desc}</div>
+                </div>
+                <div className="text-right shrink-0">
+                  <div className="font-cormorant text-2xl font-normal leading-none text-[#1A1410]">{p.tuition}</div>
+                  <div className="mt-0.5 text-[9px] uppercase tracking-widest text-[#C0B0A0]">Tuition</div>
+                </div>
+              </div>
+
+              {/* Card bottom: stats grid */}
+              <div className="grid grid-cols-4 divide-x divide-[#EDE8E1]">
+                {[
+                  { val: p.hours.toLocaleString(), lbl: 'Hours',     gold: true  },
+                  { val: p.fullTime,               lbl: 'Full-Time', gold: false },
+                  { val: p.reg,                    lbl: 'Reg.',      gold: false },
+                  { val: p.kit,                    lbl: 'Kit',       gold: false },
+                ].map(s => (
+                  <div key={s.lbl} className="flex flex-col items-center justify-center py-3 px-1 text-center">
+                    <div className={`font-cormorant text-base leading-none ${s.gold ? 'text-[#C4973A]' : 'text-[#8A7E72]'}`}>
+                      {s.val}
+                    </div>
+                    <div className="mt-0.5 text-[8px] uppercase tracking-[0.14em] text-[#C0B0A0]">{s.lbl}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
       </section>
     </>
   )

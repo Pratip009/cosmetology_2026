@@ -36,20 +36,10 @@ const Fees = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
-        /* ── Section ── */
-        .fees-section {
-          background: #0A0908;
-          padding: 110px 48px 120px;
-          font-family: 'DM Sans', sans-serif;
-          position: relative;
-          overflow: hidden;
-        }
+        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+        .font-dm        { font-family: 'DM Sans', sans-serif; }
 
-        @media (max-width: 640px) {
-          .fees-section { padding: 80px 20px 90px; }
-        }
-
-        /* dot-grid background */
+        /* dot-grid bg */
         .fees-dots {
           position: absolute;
           inset: 0;
@@ -58,351 +48,209 @@ const Fees = () => {
           pointer-events: none;
         }
 
-        .fees-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          position: relative;
-          z-index: 1;
-        }
-
-        /* ── Header ── */
-        .fees-header {
-          margin-bottom: 64px;
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          gap: 24px;
-          flex-wrap: wrap;
-        }
-
-        .fees-eyebrow {
-          font-size: 10px;
-          letter-spacing: 0.26em;
-          text-transform: uppercase;
-          color: #C4973A;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 14px;
-        }
-
+        /* eyebrow decoration */
         .fees-eyebrow::before {
           content: '';
           display: block;
           width: 24px;
           height: 1px;
           background: #C4973A;
+          flex-shrink: 0;
         }
 
-        .fees-h2 {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: clamp(38px, 4.5vw, 56px);
-          font-weight: 300;
-          color: #EDE8DF;
-          line-height: 1;
-          letter-spacing: -0.01em;
-          margin: 0;
-        }
-
-        .fees-h2 em {
-          font-style: italic;
-          color: #C4973A;
-        }
-
-        /* ── Grid ── */
-        .fees-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-        }
-
-        @media (max-width: 900px) {
-          .fees-grid { grid-template-columns: 1fr; }
-        }
-
-        /* ── Card ── */
+        /* ── Card transitions ── */
         .fee-card {
-          position: relative;
-          border-radius: 20px;
-          overflow: hidden;
-          border: 1px solid #1E1C17;
-          cursor: default;
-          background: #0F0E0B;
-          min-height: 420px;
-          display: flex;
-          flex-direction: column;
           transition:
             border-color 0.4s ease,
             transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
             box-shadow 0.5s ease;
         }
-
         .fee-card:hover {
-          border-color: #C4973A66;
+          border-color: rgba(196,151,58,0.4) !important;
           transform: translateY(-10px);
-          box-shadow:
-            0 40px 80px rgba(0, 0, 0, 0.6),
-            0 0 0 1px #C4973A22;
+          box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(196,151,58,0.13);
+        }
+        /* on mobile, disable lift — feels wrong on touch */
+        @media (max-width: 639px) {
+          .fee-card:hover { transform: none; }
+          .fee-card.tapped { border-color: rgba(196,151,58,0.4) !important; }
         }
 
-        /* ── Image layer — always visible, brightens on hover ── */
-        .fee-card-img {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-        }
-
+        /* ── Image: base state clearly visible, hover = sharper ── */
         .fee-card-img img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          opacity: 0.18;
+          transition: opacity 0.6s cubic-bezier(0.23,1,0.32,1),
+                      transform 0.7s cubic-bezier(0.23,1,0.32,1),
+                      filter 0.6s ease;
+          /* Base: clearly visible — opacity 0.45, desaturated */
+          opacity: 0.45;
           transform: scale(1.04);
-          filter: saturate(0.5) brightness(0.5);
-          transition:
-            opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1),
-            transform 0.7s cubic-bezier(0.23, 1, 0.32, 1),
-            filter 0.6s ease;
+          filter: saturate(0.5) brightness(0.55);
         }
-
         .fee-card:hover .fee-card-img img {
-          opacity: 0.55;
+          /* Hover: vivid and sharp */
+          opacity: 0.75;
           transform: scale(1);
-          filter: saturate(0.7) brightness(0.38);
+          filter: saturate(0.85) brightness(0.5);
         }
 
-        /* ── Gradient overlay ── */
-        .fee-card-overlay {
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          background: linear-gradient(
-            to top,
-            #0A0908 0%,
-            #0A090888 55%,
-            transparent 100%
-          );
-        }
-
-        /* ── Content ── */
-        .fee-card-content {
-          position: relative;
-          z-index: 2;
-          padding: 36px 32px;
-          display: flex;
-          flex-direction: column;
-          flex: 1;
-          justify-content: space-between;
-        }
-
-        .fee-card-top {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-        }
-
-        /* icon ring — spins 360° on hover */
+        /* ── Icon ring ── */
         .fee-icon-ring {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          border: 1px solid #2E2B22;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #C4973A;
-          flex-shrink: 0;
-          transition:
-            border-color 0.3s ease,
-            background 0.3s ease,
-            transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: border-color 0.3s, background 0.3s,
+                      transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
         }
-
         .fee-card:hover .fee-icon-ring {
-          border-color: #C4973A88;
-          background: #C4973A18;
+          border-color: rgba(196,151,58,0.53) !important;
+          background: rgba(196,151,58,0.1) !important;
           transform: rotate(360deg) scale(1.1);
         }
 
-        /* number — slides left on hover */
-        .fee-num {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 13px;
-          font-style: italic;
-          color: #3A3530;
-          letter-spacing: 0.06em;
-          transition: color 0.3s ease, transform 0.3s ease;
-        }
+        /* ── Number ── */
+        .fee-num { transition: color 0.3s, transform 0.3s; }
+        .fee-card:hover .fee-num { color: rgba(196,151,58,0.53) !important; transform: translateX(-4px); }
 
-        .fee-card:hover .fee-num {
-          color: #C4973A88;
-          transform: translateX(-4px);
-        }
-
-        /* keyword — slides up and fades in */
+        /* ── Keyword ── */
         .fee-keyword {
-          font-size: 10px;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: #C4973A;
-          font-weight: 500;
-          margin-bottom: 12px;
           opacity: 0;
           transform: translateY(8px);
-          transition:
-            opacity 0.35s ease 0.06s,
-            transform 0.35s ease 0.06s;
+          transition: opacity 0.35s ease 0.06s, transform 0.35s ease 0.06s;
         }
+        .fee-card:hover .fee-keyword { opacity: 1; transform: translateY(0); }
 
-        .fee-card:hover .fee-keyword {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        /* ── Title float ── */
+        .fee-title { transition: transform 0.4s cubic-bezier(0.23,1,0.32,1); }
+        .fee-card:hover .fee-title { transform: translateY(-3px); }
 
-        /* title — floats up slightly */
-        .fee-title {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 30px;
-          font-weight: 400;
-          color: #EDE8DF;
-          line-height: 1.1;
-          margin: 0 0 16px;
-          letter-spacing: 0.01em;
-          transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .fee-card:hover .fee-title {
-          transform: translateY(-3px);
-        }
-
-        /* description — brightens and floats */
-        .fee-desc {
-          font-size: 14px;
-          line-height: 1.75;
-          color: #4A4540;
-          font-weight: 300;
-          margin: 0;
-          transition:
-            color 0.4s ease,
-            transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .fee-card:hover .fee-desc {
-          color: #8A7E72;
-          transform: translateY(-2px);
-        }
+        /* ── Desc brighten ── */
+        .fee-desc { transition: color 0.4s, transform 0.4s cubic-bezier(0.23,1,0.32,1); }
+        .fee-card:hover .fee-desc { color: #8A7E72 !important; transform: translateY(-2px); }
 
         /* ── Bottom sweep line ── */
         .fee-line {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, #C4973A, transparent);
           transform: scaleX(0);
           transform-origin: left;
-          transition: transform 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+          transition: transform 0.55s cubic-bezier(0.23,1,0.32,1);
         }
+        .fee-card:hover .fee-line { transform: scaleX(1); }
 
-        .fee-card:hover .fee-line {
-          transform: scaleX(1);
-        }
-
-        /* ── Floating particles ── */
-        .fee-particles {
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          pointer-events: none;
-          overflow: hidden;
-          border-radius: 20px;
-        }
-
+        /* ── Particles ── */
         .fee-dot {
           position: absolute;
-          width: 3px;
-          height: 3px;
+          width: 3px; height: 3px;
           border-radius: 50%;
           background: #C4973A;
           opacity: 0;
           bottom: -6px;
         }
-
         .fee-card:hover .fee-dot { animation: dotFloat 2.5s ease-in-out infinite; }
-
-        .fee-dot:nth-child(1) { left: 15%; animation-delay: 0s;    }
-        .fee-dot:nth-child(2) { left: 30%; animation-delay: 0.4s;  }
-        .fee-dot:nth-child(3) { left: 50%; animation-delay: 0.8s;  }
-        .fee-dot:nth-child(4) { left: 65%; animation-delay: 1.2s;  }
-        .fee-dot:nth-child(5) { left: 80%; animation-delay: 0.6s;  }
-
+        .fee-dot:nth-child(1) { left: 15%; animation-delay: 0s;   }
+        .fee-dot:nth-child(2) { left: 30%; animation-delay: 0.4s; }
+        .fee-dot:nth-child(3) { left: 50%; animation-delay: 0.8s; }
+        .fee-dot:nth-child(4) { left: 65%; animation-delay: 1.2s; }
+        .fee-dot:nth-child(5) { left: 80%; animation-delay: 0.6s; }
         @keyframes dotFloat {
-          0%   { opacity: 0;   transform: translateY(0)   translateX(0); }
+          0%   { opacity: 0;   transform: translateY(0) translateX(0); }
           20%  { opacity: 0.7; }
           80%  { opacity: 0.3; }
           100% { opacity: 0;   transform: translateY(-80px) translateX(10px); }
         }
       `}</style>
 
-      <section className="fees-section">
+      <section className="font-dm relative overflow-hidden bg-[#0A0908] px-5 py-20 sm:px-10 sm:py-24 lg:px-12 lg:py-28">
         <div className="fees-dots" />
 
-        <div className="fees-inner">
-          <div className="fees-header">
+        <div className="relative z-10 mx-auto max-w-7xl">
+
+          {/* ── Header ── */}
+          <div className="mb-12 flex flex-wrap items-end justify-between gap-6 sm:mb-16">
             <div>
-              <p className="fees-eyebrow">Enrollment</p>
-              <h2 className="fees-h2">Fee <em>Breakdown</em></h2>
+              <p className="fees-eyebrow mb-3.5 flex items-center gap-2.5 text-[10px] font-medium uppercase tracking-[0.26em] text-[#C4973A]">
+                Enrollment
+              </p>
+              <h2
+                className="font-cormorant m-0 leading-none tracking-[-0.01em] text-[#EDE8DF]"
+                style={{ fontSize: 'clamp(36px, 4.5vw, 56px)', fontWeight: 300 }}
+              >
+                Fee <em className="italic text-[#C4973A]">Breakdown</em>
+              </h2>
             </div>
           </div>
 
-          <div className="fees-grid">
+          {/* ── Cards grid ── */}
+          {/* Mobile: stacked | sm: 1 col | md: 3 cols */}
+          <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
             {cards.map(({ icon: Icon, title, desc, image, num, keyword }, i) => (
               <div
                 key={i}
-                className="fee-card"
+                className={`fee-card relative flex min-h-[380px] cursor-default flex-col overflow-hidden rounded-2xl border border-[#1E1C17] bg-[#0F0E0B] sm:min-h-[420px] lg:min-h-[460px]`}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
               >
-                {/* always-visible background image */}
-                <div className="fee-card-img">
-                  <img src={image} alt={title} />
+                {/* Background image */}
+                <div className="fee-card-img absolute inset-0 z-0">
+                  <img src={image} alt={title} className="h-full w-full object-cover" />
                 </div>
 
-                {/* gradient overlay */}
-                <div className="fee-card-overlay" />
+                {/* Gradient overlay — lighter than before so image shows through */}
+                <div
+                  className="absolute inset-0 z-[1]"
+                  style={{
+                    background: 'linear-gradient(to top, #0A0908 0%, rgba(10,9,8,0.72) 45%, rgba(10,9,8,0.3) 100%)',
+                  }}
+                />
 
-                {/* floating gold particles */}
-                <div className="fee-particles">
-                  <div className="fee-dot" />
-                  <div className="fee-dot" />
-                  <div className="fee-dot" />
-                  <div className="fee-dot" />
-                  <div className="fee-dot" />
+                {/* Floating particles */}
+                <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-2xl">
+                  {[...Array(5)].map((_, d) => (
+                    <div key={d} className="fee-dot" />
+                  ))}
                 </div>
 
-                {/* main content */}
-                <div className="fee-card-content">
-                  <div className="fee-card-top">
-                    <div className="fee-icon-ring">
+                {/* Content */}
+                <div className="relative z-[2] flex flex-1 flex-col justify-between p-7 sm:p-8 lg:p-9">
+                  {/* Top: icon + number */}
+                  <div className="flex items-start justify-between">
+                    <div className="fee-icon-ring flex h-12 w-12 items-center justify-center rounded-full border border-[#2E2B22] text-[#C4973A]">
                       <Icon size={18} strokeWidth={1.5} />
                     </div>
-                    <span className="fee-num">{num}</span>
+                    <span
+                      className="fee-num font-cormorant italic tracking-[0.06em]"
+                      style={{ fontSize: '13px', color: '#3A3530' }}
+                    >
+                      {num}
+                    </span>
                   </div>
 
-                  <div className="fee-card-bottom">
-                    <p className="fee-keyword">{keyword}</p>
-                    <h3 className="fee-title">{title}</h3>
-                    <p className="fee-desc">{desc}</p>
+                  {/* Bottom: keyword + title + desc */}
+                  <div>
+                    <p
+                      className="fee-keyword mb-3 text-[10px] font-medium uppercase tracking-[0.18em] text-[#C4973A]"
+                    >
+                      {keyword}
+                    </p>
+                    <h3
+                      className="fee-title font-cormorant mb-4 leading-[1.1] tracking-[0.01em] text-[#EDE8DF]"
+                      style={{ fontSize: 'clamp(24px, 2.5vw, 30px)', fontWeight: 400 }}
+                    >
+                      {title}
+                    </h3>
+                    <p
+                      className="fee-desc text-sm font-light leading-[1.75]"
+                      style={{ color: '#4A4540' }}
+                    >
+                      {desc}
+                    </p>
                   </div>
                 </div>
 
-                {/* sweep line */}
-                <div className="fee-line" />
+                {/* Bottom sweep line */}
+                <div
+                  className="fee-line absolute bottom-0 left-0 right-0 z-[3] h-[2px]"
+                  style={{ background: 'linear-gradient(90deg, transparent, #C4973A, transparent)' }}
+                />
               </div>
             ))}
           </div>
+
         </div>
       </section>
     </>

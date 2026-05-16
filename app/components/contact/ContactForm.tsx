@@ -2,59 +2,21 @@ import { useState, useEffect, useRef, ReactNode, RefObject } from "react";
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 
-interface ContactDetail {
-  icon: string;
-  label: string;
-  value: string;
-  href: string;
-}
-
-interface Social {
-  id: string;
-  label: string;
-  handle: string;
-  href: string;
-  color: string;
-  icon: ReactNode;
-}
-
-interface CareerService {
-  title: string;
-  desc: string;
-  icon: ReactNode;
-}
-
-interface FormState {
-  name: string;
-  email: string;
-  phone: string;
-  program: string;
-  message: string;
-}
-
-interface FormErrors {
-  name?: boolean;
-  email?: boolean;
-}
-
-interface RevealProps {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}
-
-interface IconProps {
-  name: string;
-  size?: number;
-}
+interface ContactDetail { icon: string; label: string; value: string; href: string; }
+interface Social { id: string; label: string; handle: string; href: string; color: string; icon: ReactNode; }
+interface CareerService { title: string; desc: string; icon: ReactNode; }
+interface FormState { name: string; email: string; phone: string; program: string; message: string; }
+interface FormErrors { name?: boolean; email?: boolean; }
+interface RevealProps { children: ReactNode; delay?: number; className?: string; }
+interface IconProps { name: string; size?: number; }
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
 const contactDetails: ContactDetail[] = [
-  { icon: "phone",   label: "Phone",    value: "(201) 451-1599",       href: "tel:2014511599" },
-  { icon: "globe",   label: "Website",  value: "www.csjcnj.com",       href: "https://www.csjcnj.com" },
+  { icon: "phone",   label: "Phone",    value: "(201) 451-1599",          href: "tel:2014511599" },
+  { icon: "globe",   label: "Website",  value: "www.csjcnj.com",          href: "https://www.csjcnj.com" },
   { icon: "map-pin", label: "Location", value: "Jersey City, New Jersey", href: "https://maps.google.com/?q=Cosmetology+School+of+Jersey+City+NJ" },
-  { icon: "mail",    label: "Email",    value: "info@csjcnj.com",       href: "mailto:info@csjcnj.com" },
+  { icon: "mail",    label: "Email",    value: "info@csjcnj.com",         href: "mailto:info@csjcnj.com" },
 ];
 
 const socials: Social[] = [
@@ -98,7 +60,7 @@ const socials: Social[] = [
   },
 ];
 
-const programs: string[] = ["Cosmetology", "Barbering", "Nail Technology", "Teacher Training", "Refresher"];
+const programsList: string[] = ["Cosmetology", "Barbering", "Nail Technology", "Teacher Training", "Refresher"];
 
 const careerServices: CareerService[] = [
   {
@@ -150,27 +112,18 @@ const enrollmentReqs: string[] = [
 function useReveal(): [RefObject<HTMLDivElement | null>, boolean] {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState<boolean>(false);
-
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
       { threshold: 0.12 }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
-
   return [ref, visible];
 }
-
-// ─── REVEAL WRAPPER ──────────────────────────────────────────────────────────
 
 function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   const [ref, visible] = useReveal();
@@ -228,12 +181,6 @@ function Icon({ name, size = 18 }: IconProps) {
         <polygon points="22 2 15 22 11 13 2 9 22 2"/>
       </svg>
     ),
-    arrow: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width={size} height={size}>
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
-      </svg>
-    ),
     external: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width={size} height={size}>
         <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
@@ -245,342 +192,59 @@ function Icon({ name, size = 18 }: IconProps) {
   return <>{icons[name] ?? null}</>;
 }
 
-// ─── STYLES ──────────────────────────────────────────────────────────────────
+// ─── MINIMAL REMAINING STYLES (pseudo-elements & keyframes only) ─────────────
 
-const styles = `
+const minimalStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --cream: #FEFCF7;
-    --sand: #F5F0E8;
-    --sand-dk: #EDE6D8;
     --gold: #B8913A;
     --gold-lt: #D4AB5A;
     --gold-pale: #F7EDD8;
     --gold-dark: #8A6B28;
     --ink: #1C1A15;
-    --ink2: #4A4540;
-    --ink3: #8A837A;
-    --border: #E2D9C8;
-    --white: #FFFFFF;
-    --shadow-sm: 0 1px 8px rgba(28,26,21,0.06);
-    --shadow-md: 0 4px 24px rgba(28,26,21,0.10);
     --ff-display: 'Cormorant Garamond', Georgia, serif;
     --ff-body: 'DM Sans', system-ui, sans-serif;
-    --radius: 8px;
-    --radius-lg: 12px;
   }
 
   html { scroll-behavior: smooth; }
-  body {
-    background: var(--cream);
-    font-family: var(--ff-body);
-    color: var(--ink);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+  body { font-family: var(--ff-body); -webkit-font-smoothing: antialiased; }
 
-  /* ── CONTENT ── */
-  .content-wrap { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: 4rem;
-    align-items: start;
-  }
-  @media (max-width: 720px) {
-    .two-col { grid-template-columns: 1fr; gap: 3rem; }
-  }
+  .font-display { font-family: var(--ff-display); }
 
-  /* ── SECTION LABEL ── */
-  .section-label {
-    font-size: 9px; letter-spacing: 0.45em; text-transform: uppercase;
-    color: var(--gold); font-weight: 500; margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 0.75rem;
-  }
+  /* Section label trailing line — pseudo only */
   .section-label::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-    display: inline-block; max-width: 60px;
+    content: ''; flex: 1; height: 1px;
+    background: #E2D9C8; display: inline-block; max-width: 60px;
   }
 
-  /* ── CONTACT ITEMS ── */
-  .contact-list { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem; }
-  .contact-item { display: flex; align-items: center; gap: 1rem; }
-  .contact-icon-wrap {
-    width: 42px; height: 42px; border-radius: 50%;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; background: var(--sand); color: var(--gold);
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .contact-item:hover .contact-icon-wrap {
-    border-color: var(--gold-lt); background: var(--gold-pale);
-  }
-  .contact-label-text {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em;
-    color: var(--ink3); font-weight: 500; margin-bottom: 3px;
-  }
-  .contact-value-text { font-size: 14px; color: var(--ink2); }
-  .contact-link {
-    color: var(--ink2); text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .contact-link:hover { color: var(--gold); border-color: var(--gold-lt); }
-
-  /* ── SOCIAL GRID ── */
-  .social-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 0.625rem; margin-bottom: 2.5rem;
-  }
-  .social-card {
-    display: flex; align-items: center; gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border); border-radius: var(--radius);
-    background: var(--white); text-decoration: none; color: var(--ink2);
-    transition: all 0.2s; box-shadow: var(--shadow-sm);
-  }
-  .social-card:hover {
-    border-color: var(--gold-lt); background: var(--gold-pale);
-    transform: translateY(-2px); box-shadow: var(--shadow-md);
-  }
-  .social-icon {
-    width: 34px; height: 34px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; color: white;
-  }
-  .social-name { font-size: 13px; font-weight: 500; color: var(--ink); line-height: 1.2; }
-  .social-handle { font-size: 10px; color: var(--ink3); font-weight: 300; }
-
-  /* ── COMPLAINT BOX ── */
-  .complaint-box {
-    background: var(--gold-pale);
-    border: 1px solid rgba(184,145,58,0.3);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem 1.5rem;
-  }
-  .complaint-box h4 {
-    font-family: var(--ff-display); font-size: 1rem; font-weight: 600;
-    color: var(--ink); margin-bottom: 0.625rem;
-  }
-  .complaint-box p { font-size: 13px; color: var(--ink2); line-height: 1.7; font-weight: 300; }
-  .complaint-note { margin-top: 0.625rem !important; font-size: 11.5px !important; color: var(--ink3) !important; font-style: italic; }
-
-  /* ── FORM ── */
-  .form-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius-lg); padding: 2.5rem;
-    box-shadow: var(--shadow-md);
-  }
-  .form-title {
-    font-family: var(--ff-display); font-size: 2rem; font-weight: 400;
-    color: var(--ink); margin-bottom: 0.375rem;
-  }
-  .form-subtitle { font-size: 13px; color: var(--ink3); font-weight: 300; margin-bottom: 2rem; }
-  .field { margin-bottom: 1.25rem; }
-  .field-label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em;
-    color: var(--ink3); font-weight: 500; display: block; margin-bottom: 0.5rem;
-  }
-  .field-input,
-  .field-select,
-  .field-textarea {
-    width: 100%; border: 1px solid var(--border); padding: 0.7rem 0.9rem;
-    font-size: 14px; color: var(--ink); background: var(--cream);
-    font-family: var(--ff-body); border-radius: var(--radius);
-    outline: none; transition: border-color 0.2s, background 0.2s;
-    -webkit-appearance: none;
-  }
-  .field-input:focus,
-  .field-select:focus,
-  .field-textarea:focus {
-    border-color: var(--gold-lt); background: var(--white);
-  }
-  .field-input::placeholder,
-  .field-textarea::placeholder { color: var(--ink3); font-weight: 300; }
-  .field-input.error { border-color: #E24B4A; }
+  /* Select chevron */
   .field-select {
     background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238A837A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 0.9rem center;
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    -webkit-appearance: none;
     cursor: pointer;
   }
-  .field-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
 
-  .btn-primary {
-    width: 100%; padding: 0.875rem;
-    background: var(--ink); color: white; border: none;
-    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
-    font-family: var(--ff-body); font-weight: 500; cursor: pointer;
-    border-radius: var(--radius); transition: background 0.2s, transform 0.1s;
-    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  }
-  .btn-primary:hover { background: var(--gold); }
-  .btn-primary:active { transform: scale(0.99); }
-  .btn-primary:disabled { background: var(--ink3); cursor: not-allowed; transform: none; }
-
-  /* ── SUCCESS STATE ── */
-  .success-wrap {
-    text-align: center; padding: 4rem 2rem;
-    display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
-  }
-  .success-ring {
-    width: 72px; height: 72px; border-radius: 50%;
-    border: 1.5px solid var(--gold-lt); background: var(--gold-pale);
-    display: flex; align-items: center; justify-content: center; color: var(--gold);
-    animation: pulse-ring 2s ease infinite;
-  }
+  /* Pulse ring keyframe */
   @keyframes pulse-ring {
     0%, 100% { box-shadow: 0 0 0 0 rgba(184,145,58,0.25); }
-    50% { box-shadow: 0 0 0 12px rgba(184,145,58,0); }
+    50%       { box-shadow: 0 0 0 12px rgba(184,145,58,0); }
   }
-  .success-title { font-family: var(--ff-display); font-size: 2rem; font-weight: 400; color: var(--ink); }
-  .success-sub { font-size: 14px; color: var(--ink3); font-weight: 300; }
+  .pulse-ring { animation: pulse-ring 2s ease infinite; }
 
-  /* ── MAP ── */
-  .map-section {
-    background: var(--sand-dk);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  .map-inner { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
-  .map-header { text-align: center; margin-bottom: 2rem; }
-  .map-frame-wrap {
-    position: relative; border-radius: var(--radius-lg); overflow: hidden;
-    border: 1px solid var(--border); box-shadow: var(--shadow-md); height: 380px;
-  }
-  .map-frame-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
-  .map-overlay {
-    position: absolute; top: 1.25rem; left: 1.25rem;
-    background: rgba(254,252,247,0.96); backdrop-filter: blur(8px);
-    border: 1px solid var(--border); border-radius: var(--radius-lg);
-    padding: 1rem 1.25rem; box-shadow: var(--shadow-md); max-width: 230px;
-  }
-  .map-overlay-name {
-    font-family: var(--ff-display); font-size: 1rem; font-weight: 600;
-    color: var(--ink); line-height: 1.3; margin-bottom: 0.25rem;
-  }
-  .map-overlay-addr { font-size: 12px; color: var(--ink3); margin-bottom: 0.625rem; font-weight: 300; }
-  .map-dir-link {
-    display: inline-flex; align-items: center; gap: 0.375rem;
-    font-size: 11px; color: var(--gold); text-decoration: none; font-weight: 500;
-    border-bottom: 1px solid var(--gold-lt); padding-bottom: 1px; transition: color 0.2s;
-  }
-  .map-dir-link:hover { color: var(--gold-dark); }
-
-  /* ── CAREER ── */
-  .career-section { background: var(--white); padding: 5rem 2rem; }
-  .career-inner { max-width: 1100px; margin: 0 auto; }
-  .section-header { text-align: center; margin-bottom: 3rem; }
-  .section-eyebrow {
-    font-size: 9px; letter-spacing: 0.45em; text-transform: uppercase;
-    color: var(--gold); font-weight: 500; margin-bottom: 0.875rem;
-  }
-  .section-title {
-    font-family: var(--ff-display);
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    font-weight: 300; color: var(--ink); line-height: 1.1; margin-bottom: 0.625rem;
-  }
-  .section-note { font-size: 13px; color: var(--ink3); font-weight: 300; }
-  .career-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.25rem;
-  }
-  .career-card {
-    background: var(--sand); border: 1px solid var(--border);
-    border-radius: var(--radius-lg); padding: 2rem 1.75rem;
-    transition: transform 0.25s, box-shadow 0.25s;
-  }
-  .career-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-  .career-card-icon {
-    width: 46px; height: 46px; border-radius: 12px;
-    background: var(--gold-pale); border: 1px solid rgba(184,145,58,0.25);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--gold); margin-bottom: 1.25rem;
-  }
-  .career-card h3 {
-    font-family: var(--ff-display); font-size: 1.15rem; font-weight: 600;
-    color: var(--ink); margin-bottom: 0.5rem;
-  }
-  .career-card p { font-size: 13px; color: var(--ink3); line-height: 1.65; font-weight: 300; }
-
-  /* ── ENROLLMENT ── */
-  .enrollment-section {
-    background: var(--sand); padding: 5rem 2rem;
-    border-top: 1px solid var(--border);
-  }
-  .enrollment-inner { max-width: 860px; margin: 0 auto; }
-  .req-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 0.75rem; margin-bottom: 2.5rem;
-  }
-  .req-item {
-    display: flex; align-items: flex-start; gap: 0.75rem;
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1rem 1.125rem; box-shadow: var(--shadow-sm);
-  }
-  .req-check {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: var(--gold-pale); border: 1px solid rgba(184,145,58,0.3);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; color: var(--gold); margin-top: 1px;
-  }
-  .req-item span { font-size: 13px; color: var(--ink2); line-height: 1.55; font-weight: 300; }
-  .enrollment-cta { text-align: center; }
-  .btn-outline {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.8rem 2.25rem; border: 1.5px solid var(--gold); color: var(--gold);
-    background: transparent; font-size: 11px; letter-spacing: 0.2em;
-    text-transform: uppercase; font-family: var(--ff-body); font-weight: 500;
-    cursor: pointer; border-radius: var(--radius); text-decoration: none;
-    transition: all 0.2s;
-  }
-  .btn-outline:hover { background: var(--gold); color: white; }
-
-  /* ── FOOTER BANNER ── */
-  .footer-banner {
-    background: var(--ink); padding: 4rem 2rem; text-align: center;
-    position: relative; overflow: hidden;
-  }
+  /* Footer radial glow — pseudo only */
   .footer-glow {
     position: absolute; inset: 0; pointer-events: none;
     background: radial-gradient(ellipse 60% 100% at 50% 50%, rgba(184,145,58,0.12) 0%, transparent 70%);
   }
-  .footer-tagline {
-    font-family: var(--ff-display); font-style: italic;
-    font-size: clamp(1.75rem, 5vw, 2.5rem); font-weight: 300;
-    color: var(--gold-lt); display: block; margin-bottom: 0.75rem; position: relative;
-  }
-  .footer-desc {
-    font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 300;
-    margin-bottom: 0.5rem; position: relative;
-  }
-  .footer-url { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.2em; position: relative; }
-  .footer-bottom {
-    background: rgba(0,0,0,0.35); padding: 1.25rem 2rem;
-    display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;
-  }
-  .footer-social-link {
-    width: 34px; height: 34px; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.15);
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(255,255,255,0.5); text-decoration: none;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .footer-social-link:hover { border-color: var(--gold-lt); color: var(--gold-lt); }
 `;
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 
 export default function ContactPage() {
-  const [form, setForm] = useState<FormState>({
-    name: "", email: "", phone: "", program: "", message: "",
-  });
+  const [form, setForm] = useState<FormState>({ name: "", email: "", phone: "", program: "", message: "" });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [sending, setSending] = useState<boolean>(false);
@@ -601,35 +265,39 @@ export default function ContactPage() {
 
   const updateField = (key: keyof FormState, val: string): void => {
     setForm(f => ({ ...f, [key]: val }));
-    if (errors[key as keyof FormErrors]) {
-      setErrors(e => ({ ...e, [key]: false }));
-    }
+    if (errors[key as keyof FormErrors]) setErrors(e => ({ ...e, [key]: false }));
   };
 
   return (
     <>
-      <style>{styles}</style>
+      <style>{minimalStyles}</style>
+      <div className="overflow-x-hidden w-full">
 
-      {/* CONTACT + FORM */}
-      <section id="contact" className="content-wrap">
-        <div className="two-col">
+      {/* ── CONTACT + FORM ── */}
+      <section id="contact" className="max-w-[1100px] mx-auto px-4 sm:px-8 py-14 sm:py-16 overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
 
-          {/* LEFT: Contact Info */}
+          {/* LEFT */}
           <div>
             <Reveal>
-              <p className="section-label">Reach Us</p>
-              <div className="contact-list">
+              {/* Section label */}
+              <p className="section-label flex items-center gap-3 text-[9px] tracking-[0.45em] uppercase text-[#B8913A] font-medium mb-6">
+                Reach Us
+              </p>
+
+              {/* Contact list */}
+              <div className="flex flex-col gap-5 mb-10">
                 {contactDetails.map(({ icon, label, value, href }) => (
-                  <div className="contact-item" key={label}>
-                    <div className="contact-icon-wrap">
+                  <div key={label} className="group flex items-center gap-4 min-w-0">
+                    <div className="w-[42px] h-[42px] rounded-full border border-[#E2D9C8] bg-[#F5F0E8] text-[#B8913A] flex items-center justify-center flex-shrink-0 transition-all duration-200 group-hover:border-[#D4AB5A] group-hover:bg-[#F7EDD8]">
                       <Icon name={icon} size={16} />
                     </div>
-                    <div>
-                      <p className="contact-label-text">{label}</p>
-                      <p className="contact-value-text">
+                    <div className="min-w-0">
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#8A837A] font-medium mb-0.5">{label}</p>
+                      <p className="text-[14px] text-[#4A4540] truncate">
                         <a
                           href={href}
-                          className="contact-link"
+                          className="border-b border-transparent transition-colors duration-200 hover:text-[#B8913A] hover:border-[#D4AB5A]"
                           target={href.startsWith("http") ? "_blank" : undefined}
                           rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                         >
@@ -643,14 +311,24 @@ export default function ContactPage() {
             </Reveal>
 
             <Reveal delay={100}>
-              <p className="section-label">Follow Us</p>
-              <div className="social-grid">
+              <p className="section-label flex items-center gap-3 text-[9px] tracking-[0.45em] uppercase text-[#B8913A] font-medium mb-6">
+                Follow Us
+              </p>
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2.5 mb-10">
                 {socials.map(({ id, label, handle, href, color, icon }) => (
-                  <a key={id} href={href} target="_blank" rel="noopener noreferrer" className="social-card">
-                    <div className="social-icon" style={{ background: color }}>{icon}</div>
-                    <div>
-                      <div className="social-name">{label}</div>
-                      <div className="social-handle">{handle}</div>
+                  <a
+                    key={id}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 px-4 py-3 border border-[#E2D9C8] rounded-lg bg-white text-[#4A4540] shadow-[0_1px_8px_rgba(28,26,21,0.06)] transition-all duration-200 hover:border-[#D4AB5A] hover:bg-[#F7EDD8] hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(28,26,21,0.10)] min-w-0"
+                  >
+                    <div className="w-[34px] h-[34px] rounded-lg flex items-center justify-center flex-shrink-0 text-white" style={{ background: color }}>
+                      {icon}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-[13px] font-medium text-[#1C1A15] leading-tight">{label}</div>
+                      <div className="text-[10px] text-[#8A837A] font-light truncate">{handle}</div>
                     </div>
                   </a>
                 ))}
@@ -658,14 +336,14 @@ export default function ContactPage() {
             </Reveal>
 
             <Reveal delay={200}>
-              <div className="complaint-box">
-                <h4>NJ State Board — Complaints</h4>
-                <p>
+              <div className="bg-[#F7EDD8] border border-[rgba(184,145,58,0.3)] rounded-xl px-6 py-5">
+                <h4 className="font-display text-base font-semibold text-[#1C1A15] mb-2.5">NJ State Board — Complaints</h4>
+                <p className="text-[13px] text-[#4A4540] leading-[1.7] font-light">
                   NJ Board of Cosmetology &amp; Hairstyling<br />
                   P.O. Box 45003, Newark, NJ 07101<br />
                   Phone: (973) 504-6400
                 </p>
-                <p className="complaint-note">
+                <p className="mt-2.5 text-[11.5px] text-[#8A837A] italic font-light leading-[1.7]">
                   Students must exhaust the institution's internal complaint process before submitting to the NJ State Board.
                 </p>
               </div>
@@ -674,87 +352,81 @@ export default function ContactPage() {
 
           {/* RIGHT: Form */}
           <Reveal delay={80}>
-            <div className="form-card">
+            <div className="bg-white border border-[#E2D9C8] rounded-xl p-6 sm:p-10 shadow-[0_4px_24px_rgba(28,26,21,0.10)]">
               {submitted ? (
-                <div className="success-wrap">
-                  <div className="success-ring">
+                <div className="flex flex-col items-center gap-5 py-16 text-center">
+                  <div className="pulse-ring w-[72px] h-[72px] rounded-full border border-[#D4AB5A] bg-[#F7EDD8] flex items-center justify-center text-[#B8913A]">
                     <Icon name="check" size={28} />
                   </div>
-                  <h3 className="success-title">Message Sent!</h3>
-                  <p className="success-sub">We'll be in touch with you shortly.</p>
+                  <h3 className="font-display text-[2rem] font-normal text-[#1C1A15]">Message Sent!</h3>
+                  <p className="text-[14px] text-[#8A837A] font-light">We'll be in touch with you shortly.</p>
                 </div>
               ) : (
                 <>
-                  <h2 className="form-title">Send Us a Message</h2>
-                  <p className="form-subtitle">We'd love to hear from you. Fill out the form below.</p>
+                  <h2 className="font-display text-[2rem] font-normal text-[#1C1A15] mb-1.5">Send Us a Message</h2>
+                  <p className="text-[13px] text-[#8A837A] font-light mb-8">We'd love to hear from you. Fill out the form below.</p>
 
-                  <div className="field-row">
-                    <div className="field">
-                      <label className="field-label">First Name *</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                    <div>
+                      <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A837A] font-medium mb-2">First Name *</label>
                       <input
-                        className={`field-input${errors.name ? " error" : ""}`}
-                        type="text"
-                        placeholder="Jane"
-                        value={form.name}
-                        onChange={e => updateField("name", e.target.value)}
+                        className={`w-full border px-3.5 py-2.5 text-[14px] text-[#1C1A15] bg-[#FEFCF7] rounded-lg outline-none transition-colors duration-200 focus:border-[#D4AB5A] focus:bg-white placeholder:text-[#8A837A] placeholder:font-light ${errors.name ? "border-[#E24B4A]" : "border-[#E2D9C8]"}`}
+                        type="text" placeholder="Jane"
+                        value={form.name} onChange={e => updateField("name", e.target.value)}
                       />
                     </div>
-                    <div className="field">
-                      <label className="field-label">Last Name</label>
-                      <input className="field-input" type="text" placeholder="Smith" />
+                    <div>
+                      <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A837A] font-medium mb-2">Last Name</label>
+                      <input
+                        className="w-full border border-[#E2D9C8] px-3.5 py-2.5 text-[14px] text-[#1C1A15] bg-[#FEFCF7] rounded-lg outline-none transition-colors duration-200 focus:border-[#D4AB5A] focus:bg-white placeholder:text-[#8A837A] placeholder:font-light"
+                        type="text" placeholder="Smith"
+                      />
                     </div>
                   </div>
 
-                  <div className="field">
-                    <label className="field-label">Email Address *</label>
+                  <div className="mb-5">
+                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A837A] font-medium mb-2">Email Address *</label>
                     <input
-                      className={`field-input${errors.email ? " error" : ""}`}
-                      type="email"
-                      placeholder="jane@email.com"
-                      value={form.email}
-                      onChange={e => updateField("email", e.target.value)}
+                      className={`w-full border px-3.5 py-2.5 text-[14px] text-[#1C1A15] bg-[#FEFCF7] rounded-lg outline-none transition-colors duration-200 focus:border-[#D4AB5A] focus:bg-white placeholder:text-[#8A837A] placeholder:font-light ${errors.email ? "border-[#E24B4A]" : "border-[#E2D9C8]"}`}
+                      type="email" placeholder="jane@email.com"
+                      value={form.email} onChange={e => updateField("email", e.target.value)}
                     />
                   </div>
 
-                  <div className="field">
-                    <label className="field-label">Phone Number</label>
+                  <div className="mb-5">
+                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A837A] font-medium mb-2">Phone Number</label>
                     <input
-                      className="field-input"
-                      type="tel"
-                      placeholder="(201) 000-0000"
-                      value={form.phone}
-                      onChange={e => updateField("phone", e.target.value)}
+                      className="w-full border border-[#E2D9C8] px-3.5 py-2.5 text-[14px] text-[#1C1A15] bg-[#FEFCF7] rounded-lg outline-none transition-colors duration-200 focus:border-[#D4AB5A] focus:bg-white placeholder:text-[#8A837A] placeholder:font-light"
+                      type="tel" placeholder="(201) 000-0000"
+                      value={form.phone} onChange={e => updateField("phone", e.target.value)}
                     />
                   </div>
 
-                  <div className="field">
-                    <label className="field-label">Program of Interest</label>
+                  <div className="mb-5">
+                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A837A] font-medium mb-2">Program of Interest</label>
                     <select
-                      className="field-select"
-                      value={form.program}
-                      onChange={e => updateField("program", e.target.value)}
+                      className="field-select w-full border border-[#E2D9C8] px-3.5 py-2.5 text-[14px] text-[#1C1A15] bg-[#FEFCF7] rounded-lg outline-none transition-colors duration-200 focus:border-[#D4AB5A] focus:bg-white"
+                      value={form.program} onChange={e => updateField("program", e.target.value)}
                     >
                       <option value="">Select a program</option>
-                      {programs.map(p => <option key={p}>{p}</option>)}
+                      {programsList.map(p => <option key={p}>{p}</option>)}
                     </select>
                   </div>
 
-                  <div className="field">
-                    <label className="field-label">Message</label>
+                  <div className="mb-5">
+                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A837A] font-medium mb-2">Message</label>
                     <textarea
-                      className="field-textarea"
+                      className="w-full border border-[#E2D9C8] px-3.5 py-2.5 text-[14px] text-[#1C1A15] bg-[#FEFCF7] rounded-lg outline-none transition-colors duration-200 focus:border-[#D4AB5A] focus:bg-white placeholder:text-[#8A837A] placeholder:font-light resize-y min-h-[100px] leading-[1.6]"
                       placeholder="Tell us about yourself or ask any questions..."
-                      value={form.message}
-                      onChange={e => updateField("message", e.target.value)}
+                      value={form.message} onChange={e => updateField("message", e.target.value)}
                     />
                   </div>
 
-                  <button className="btn-primary" onClick={handleSubmit} disabled={sending}>
-                    {sending ? (
-                      <>Sending&hellip;</>
-                    ) : (
-                      <><Icon name="send" size={14} /> Send Message</>
-                    )}
+                  <button
+                    className="w-full py-3.5 bg-[#1C1A15] text-white border-none text-[11px] tracking-[0.25em] uppercase font-medium cursor-pointer rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 hover:bg-[#B8913A] active:scale-[0.99] disabled:bg-[#8A837A] disabled:cursor-not-allowed disabled:scale-100"
+                    onClick={handleSubmit} disabled={sending}
+                  >
+                    {sending ? <>Sending&hellip;</> : <><Icon name="send" size={14} /> Send Message</>}
                   </button>
                 </>
               )}
@@ -763,37 +435,33 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* MAP */}
-      <section className="map-section">
-        <div className="map-inner">
+      {/* ── MAP ── */}
+      <section className="bg-[#EDE6D8] border-t border-b border-[#E2D9C8]">
+        <div className="max-w-[1100px] mx-auto px-4 sm:px-8 py-14 sm:py-16">
           <Reveal>
-            <div className="map-header">
-              <p className="section-eyebrow">Find Us</p>
-              <h2 className="section-title">
+            <div className="text-center mb-8">
+              <p className="text-[9px] tracking-[0.45em] uppercase text-[#B8913A] font-medium mb-3.5">Find Us</p>
+              <h2 className="font-display text-[clamp(1.8rem,4vw,2.5rem)] font-light text-[#1C1A15] leading-[1.1]">
                 We're in{" "}
-                <em style={{ fontStyle: "italic", color: "var(--gold)", fontFamily: "var(--ff-display)" }}>
-                  Jersey City
-                </em>
+                <em style={{ fontStyle: "italic", color: "var(--gold)", fontFamily: "var(--ff-display)" }}>Jersey City</em>
               </h2>
             </div>
           </Reveal>
           <Reveal delay={100}>
-            <div className="map-frame-wrap">
+            <div className="relative rounded-xl overflow-hidden border border-[#E2D9C8] shadow-[0_4px_24px_rgba(28,26,21,0.10)] h-[320px] sm:h-[380px]">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96726.53386218386!2d-74.10932!3d40.71773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c250a800e8b0d5%3A0x5c780d155861b0c7!2sJersey%20City%2C%20NJ%2C%20USA!5e0!3m2!1sen!2sus!4v1700000000000"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full border-0 block"
+                allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
                 title="Map showing Jersey City, New Jersey"
               />
-              <div className="map-overlay">
-                <p className="map-overlay-name">Cosmetology School of Jersey City</p>
-                <p className="map-overlay-addr">Jersey City, New Jersey</p>
+              <div className="absolute top-5 left-5 bg-[rgba(254,252,247,0.96)] backdrop-blur-md border border-[#E2D9C8] rounded-xl px-5 py-4 shadow-[0_4px_24px_rgba(28,26,21,0.10)] max-w-[230px]">
+                <p className="font-display text-base font-semibold text-[#1C1A15] leading-[1.3] mb-1">Cosmetology School of Jersey City</p>
+                <p className="text-[12px] text-[#8A837A] mb-2.5 font-light">Jersey City, New Jersey</p>
                 <a
-                  className="map-dir-link"
+                  className="inline-flex items-center gap-1.5 text-[11px] text-[#B8913A] font-medium border-b border-[#D4AB5A] pb-px transition-colors duration-200 hover:text-[#8A6B28]"
                   href="https://maps.google.com/?q=Cosmetology+School+of+Jersey+City+NJ"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_blank" rel="noopener noreferrer"
                 >
                   <Icon name="external" size={12} /> Get Directions
                 </a>
@@ -803,23 +471,25 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* CAREER SERVICES */}
-      <section id="career" className="career-section">
-        <div className="career-inner">
+      {/* ── CAREER SERVICES ── */}
+      <section id="career" className="bg-white py-16 sm:py-20 px-4 sm:px-8">
+        <div className="max-w-[1100px] mx-auto">
           <Reveal>
-            <div className="section-header">
-              <p className="section-eyebrow">Graduate Support</p>
-              <h2 className="section-title">Career Placement Services</h2>
-              <p className="section-note">No charge — upon graduation and throughout your career</p>
+            <div className="text-center mb-10 sm:mb-12">
+              <p className="text-[9px] tracking-[0.45em] uppercase text-[#B8913A] font-medium mb-3.5">Graduate Support</p>
+              <h2 className="font-display text-[clamp(1.8rem,4vw,2.5rem)] font-light text-[#1C1A15] leading-[1.1] mb-2.5">Career Placement Services</h2>
+              <p className="text-[13px] text-[#8A837A] font-light">No charge — upon graduation and throughout your career</p>
             </div>
           </Reveal>
-          <div className="career-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {careerServices.map(({ title, desc, icon }, i) => (
               <Reveal key={title} delay={i * 90}>
-                <div className="career-card">
-                  <div className="career-card-icon">{icon}</div>
-                  <h3>{title}</h3>
-                  <p>{desc}</p>
+                <div className="bg-[#F5F0E8] border border-[#E2D9C8] rounded-xl px-7 py-8 transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-[0_4px_24px_rgba(28,26,21,0.10)]">
+                  <div className="w-[46px] h-[46px] rounded-xl bg-[#F7EDD8] border border-[rgba(184,145,58,0.25)] flex items-center justify-center text-[#B8913A] mb-5">
+                    {icon}
+                  </div>
+                  <h3 className="font-display text-[1.15rem] font-semibold text-[#1C1A15] mb-2">{title}</h3>
+                  <p className="text-[13px] text-[#8A837A] leading-[1.65] font-light">{desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -827,28 +497,33 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ENROLLMENT */}
-      <section id="programs" className="enrollment-section">
-        <div className="enrollment-inner">
+      {/* ── ENROLLMENT ── */}
+      <section id="programs" className="bg-[#F5F0E8] border-t border-[#E2D9C8] py-16 sm:py-20 px-4 sm:px-8">
+        <div className="max-w-[860px] mx-auto">
           <Reveal>
-            <div className="section-header">
-              <p className="section-eyebrow">Getting Started</p>
-              <h2 className="section-title">Enrollment Requirements</h2>
+            <div className="text-center mb-10 sm:mb-12">
+              <p className="text-[9px] tracking-[0.45em] uppercase text-[#B8913A] font-medium mb-3.5">Getting Started</p>
+              <h2 className="font-display text-[clamp(1.8rem,4vw,2.5rem)] font-light text-[#1C1A15] leading-[1.1]">Enrollment Requirements</h2>
             </div>
           </Reveal>
           <Reveal delay={80}>
-            <div className="req-grid">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
               {enrollmentReqs.map((req, i) => (
-                <div className="req-item" key={i}>
-                  <div className="req-check"><Icon name="check" size={10} /></div>
-                  <span>{req}</span>
+                <div key={i} className="flex items-start gap-3 bg-white border border-[#E2D9C8] rounded-lg px-4 py-4 shadow-[0_1px_8px_rgba(28,26,21,0.06)]">
+                  <div className="w-5 h-5 rounded-full bg-[#F7EDD8] border border-[rgba(184,145,58,0.3)] flex items-center justify-center flex-shrink-0 text-[#B8913A] mt-0.5">
+                    <Icon name="check" size={10} />
+                  </div>
+                  <span className="text-[13px] text-[#4A4540] leading-[1.55] font-light">{req}</span>
                 </div>
               ))}
             </div>
           </Reveal>
           <Reveal delay={160}>
-            <div className="enrollment-cta">
-              <a href="tel:2014511599" className="btn-outline">
+            <div className="text-center">
+              <a
+                href="tel:2014511599"
+                className="inline-flex items-center gap-2 px-9 py-3.5 border-[1.5px] border-[#B8913A] text-[#B8913A] bg-transparent text-[11px] tracking-[0.2em] uppercase font-medium rounded-lg transition-all duration-200 hover:bg-[#B8913A] hover:text-white"
+              >
                 <Icon name="phone" size={14} /> Call (201) 451-1599
               </a>
             </div>
@@ -856,30 +531,30 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* FOOTER BANNER */}
-      <section className="footer-banner">
+      {/* ── FOOTER BANNER ── */}
+      <section className="relative bg-[#1C1A15] px-4 sm:px-8 py-14 sm:py-16 text-center overflow-hidden">
         <div className="footer-glow" />
-        <em className="footer-tagline">Start Your Future Today!</em>
-        <p className="footer-desc">
+        <em className="font-display not-italic italic text-[clamp(1.75rem,5vw,2.5rem)] font-light text-[#D4AB5A] block mb-3 relative">
+          Start Your Future Today!
+        </em>
+        <p className="text-[13px] text-[rgba(255,255,255,0.4)] font-light mb-2 relative">
           Five NJ State Board-approved programs. No charge for job placement services to graduates.
         </p>
-        <p className="footer-url">www.csjcnj.com</p>
+        <p className="text-[11px] text-[rgba(255,255,255,0.2)] tracking-[0.2em] relative">www.csjcnj.com</p>
       </section>
 
-      <div className="footer-bottom">
+      <div className="bg-[rgba(0,0,0,0.35)] px-4 py-5 flex items-center justify-center gap-4 flex-wrap">
         {socials.map(({ id, label, href, icon }) => (
           <a
-            key={id}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-social-link"
+            key={id} href={href} target="_blank" rel="noopener noreferrer"
             aria-label={label}
+            className="w-[34px] h-[34px] rounded-full border border-[rgba(255,255,255,0.15)] flex items-center justify-center text-[rgba(255,255,255,0.5)] transition-all duration-200 hover:border-[#D4AB5A] hover:text-[#D4AB5A]"
           >
             {icon}
           </a>
         ))}
       </div>
+      </div>{/* end overflow-x-hidden */}
     </>
   );
 }

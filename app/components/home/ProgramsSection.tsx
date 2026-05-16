@@ -76,13 +76,9 @@ export default function ProgramsSection() {
           --ps-border: rgba(0,0,0,0.08);
         }
 
-        .ps-section {
-          background: #FFFFFF;
-          padding: 110px 0 90px;
-          font-family: 'Jost', sans-serif;
-          position: relative;
-          overflow: hidden;
-        }
+        /* ── Fonts ── */
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-jost     { font-family: 'Jost', sans-serif; }
 
         /* ── Scroll reveal ── */
         .ps-reveal {
@@ -91,29 +87,9 @@ export default function ProgramsSection() {
           transition: opacity .9s cubic-bezier(.22,1,.36,1),
                       transform .9s cubic-bezier(.22,1,.36,1);
         }
-        .ps-revealed {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        .ps-revealed { opacity: 1; transform: translateY(0); }
 
-        /* ── Header ── */
-        .ps-header {
-          text-align: center;
-          padding: 0 32px;
-          margin-bottom: 72px;
-        }
-        .ps-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 14px;
-          font-size: 10px;
-          letter-spacing: .55em;
-          text-transform: uppercase;
-          color: var(--ps-gold);
-          font-weight: 400;
-          margin-bottom: 18px;
-        }
+        /* ── Eyebrow lines ── */
         .ps-eyebrow::before,
         .ps-eyebrow::after {
           content: '';
@@ -123,49 +99,8 @@ export default function ProgramsSection() {
           opacity: .5;
           display: block;
         }
-        .ps-title {
-          font-family: 'Playfair Display', serif;
-          font-size: clamp(44px, 6vw, 72px);
-          font-weight: 400;
-          color: var(--ps-ink);
-          line-height: 1.05;
-          letter-spacing: -.02em;
-          margin: 0;
-        }
-        .ps-title-italic {
-          font-style: italic;
-          color: var(--ps-gold);
-        }
-        .ps-subtitle {
-          font-size: 12.5px;
-          color: var(--ps-muted);
-          max-width: 380px;
-          margin: 20px auto 0;
-          line-height: 2;
-          font-weight: 300;
-        }
 
-        /* ── List ── */
-        .ps-list {
-          width: 100%;
-          border-top: .5px solid var(--ps-border);
-        }
-
-        /* ── Row item ── */
-        .ps-item {
-          display: grid;
-          grid-template-columns: 80px 1fr auto;
-          align-items: center;
-          border-bottom: .5px solid var(--ps-border);
-          padding: 0 40px;
-          min-height: 100px;
-          position: relative;
-          overflow: hidden;
-          cursor: pointer;
-          text-decoration: none;
-        }
-
-        /* Warm wash background on hover */
+        /* ── Hover warm wash ── */
         .ps-item::before {
           content: '';
           position: absolute;
@@ -177,78 +112,17 @@ export default function ProgramsSection() {
         }
         .ps-item:hover::before { opacity: 1; }
 
-        /* ── Image reveal (clip-path slide-in from right) ── */
+        /* ── Image reveal ── */
         .ps-img-wrap {
-          position: absolute;
-          right: 0;
-          top: 0;
-          height: 100%;
-          width: 300px;
-          overflow: hidden;
           clip-path: inset(0 100% 0 0);
           transition: clip-path .7s cubic-bezier(.77,0,.18,1);
-          pointer-events: none;
-          z-index: 2;
         }
         .ps-item:hover .ps-img-wrap {
           clip-path: inset(0 0% 0 0);
         }
-        .ps-img-wrap img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          filter: brightness(.88) contrast(1.05);
-        }
-        /* Gradient so image fades into the warm wash */
-        .ps-img-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to right,
-            rgba(242,232,213,.95) 0%,
-            rgba(242,232,213,.2) 55%,
-            transparent 100%
-          );
-        }
 
-        /* ── Number ── */
-        .ps-num {
-          font-family: 'Playfair Display', serif;
-          font-size: 13px;
-          font-weight: 400;
-          color: var(--ps-gold);
-          opacity: .6;
-          letter-spacing: .25em;
-          position: relative;
-          z-index: 3;
-        }
-
-        /* ── Info block ── */
-        .ps-info {
-          padding: 28px 0;
-          position: relative;
-          z-index: 3;
-        }
-        .ps-name {
-          font-family: 'Playfair Display', serif;
-          font-size: 24px;
-          font-weight: 400;
-          color: var(--ps-ink);
-          line-height: 1.15;
-          transition: color .35s ease;
-          display: block;
-        }
-        .ps-item:hover .ps-name { color: var(--ps-gold); }
-
-        /* Description slides down on hover */
+        /* ── Description slide-down ── */
         .ps-desc {
-          font-size: 12.5px;
-          color: var(--ps-muted);
-          line-height: 1.85;
-          font-weight: 300;
-          max-width: 520px;
-          margin-top: 6px;
           max-height: 0;
           overflow: hidden;
           opacity: 0;
@@ -260,43 +134,8 @@ export default function ProgramsSection() {
           opacity: 1;
         }
 
-        /* ── Meta (hours + arrow) ── */
-        .ps-meta {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          position: relative;
-          z-index: 3;
-        }
-        .ps-hrs {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 2px;
-        }
-        .ps-hrs-val {
-          font-family: 'Playfair Display', serif;
-          font-size: 28px;
-          font-weight: 400;
-          color: var(--ps-ink);
-          line-height: 1;
-        }
-        .ps-hrs-lbl {
-          font-size: 9px;
-          letter-spacing: .35em;
-          text-transform: uppercase;
-          color: var(--ps-muted);
-        }
-        /* Circle arrow — rotates 45° on hover */
+        /* ── Arrow spin ── */
         .ps-arrow {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          border: .5px solid rgba(0,0,0,.15);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
           transition: border-color .3s, background .3s,
                       transform .5s cubic-bezier(.22,1,.36,1);
         }
@@ -305,109 +144,213 @@ export default function ProgramsSection() {
           background: var(--ps-gold);
           transform: rotate(-45deg);
         }
-        .ps-arrow svg {
-          width: 13px;
-          height: 13px;
-          stroke: var(--ps-ink2);
-          transition: stroke .3s;
-        }
+        .ps-arrow svg { transition: stroke .3s; }
         .ps-item:hover .ps-arrow svg { stroke: #fff; }
 
-        /* ── Footer stats ── */
-        .ps-footer {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 52px;
-          padding: 60px 40px 0;
-          flex-wrap: wrap;
-        }
-        .ps-stat { text-align: center; }
-        .ps-stat-v {
-          font-family: 'Playfair Display', serif;
-          font-size: 36px;
-          font-weight: 400;
-          color: var(--ps-ink);
-          line-height: 1;
-        }
-        .ps-stat-l {
-          font-size: 9px;
-          letter-spacing: .38em;
-          text-transform: uppercase;
-          color: var(--ps-muted);
-          margin-top: 5px;
-          display: block;
-        }
-        .ps-fdiv {
-          width: .5px;
-          height: 48px;
-          background: rgba(0,0,0,.1);
-        }
+        /* ── Name color ── */
+        .ps-name { transition: color .35s ease; }
+        .ps-item:hover .ps-name { color: var(--ps-gold); }
 
-        @media (max-width: 680px) {
-          .ps-item {
-            grid-template-columns: 56px 1fr auto;
-            padding: 0 20px;
+        /* ── Mobile: disable hover image reveal & desc expand ── */
+        @media (max-width: 639px) {
+          .ps-img-wrap { display: none; }
+          .ps-item:hover .ps-desc {
+            max-height: 0;
+            opacity: 0;
           }
-          .ps-img-wrap { width: 180px; }
-          .ps-footer { gap: 28px; }
-          .ps-fdiv { height: 32px; }
         }
       `}</style>
 
-      <section className="ps-section" ref={sectionRef}>
-
+      <section
+        ref={sectionRef}
+        className="font-jost relative overflow-hidden bg-white py-16 sm:py-24 lg:py-28"
+      >
         {/* ── Header ── */}
-        <div className="ps-header ps-reveal">
-          <p className="ps-eyebrow">Explore</p>
-          <h2 className="ps-title">
+        <div className="ps-reveal mx-auto mb-14 max-w-xl px-6 text-center sm:mb-16 lg:mb-20">
+          {/* Eyebrow */}
+          <p
+            className="ps-eyebrow mb-4 inline-flex items-center justify-center gap-3.5"
+            style={{
+              fontSize: "10px",
+              letterSpacing: ".55em",
+              textTransform: "uppercase",
+              color: "var(--ps-gold)",
+              fontWeight: 400,
+            }}
+          >
+            Explore
+          </p>
+
+          {/* Title */}
+          <h2
+            className="font-playfair m-0 leading-none tracking-tight"
+            style={{
+              fontSize: "clamp(38px, 7vw, 72px)",
+              fontWeight: 400,
+              color: "var(--ps-ink)",
+              letterSpacing: "-.02em",
+            }}
+          >
             Our{" "}
-            <span className="ps-title-italic">Programs</span>
+            <span className="italic" style={{ color: "var(--ps-gold)" }}>
+              Programs
+            </span>
           </h2>
-          <p className="ps-subtitle">
+
+          {/* Subtitle */}
+          <p
+            className="mx-auto mt-5 max-w-sm leading-loose"
+            style={{
+              fontSize: "12.5px",
+              color: "var(--ps-muted)",
+              fontWeight: 300,
+            }}
+          >
             All programs comply with N.J.A.C.&nbsp;13:28 regulations.
             Full-time and part-time schedules available.
           </p>
         </div>
 
         {/* ── Program list ── */}
-        <div className="ps-list ps-reveal" style={{ transitionDelay: ".15s" }}>
+        <div
+          className="ps-reveal ps-list w-full"
+          style={{
+            borderTop: ".5px solid var(--ps-border)",
+            transitionDelay: ".15s",
+          }}
+        >
           {programs.map((prog, i) => (
             <Link
               key={i}
               href="/programs"
-              className="ps-item"
               aria-label={`${prog.name} – ${prog.hours} hours`}
+              className="ps-item group relative flex cursor-pointer items-center overflow-hidden no-underline"
+              style={{ borderBottom: ".5px solid var(--ps-border)" }}
             >
-              {/* Image slides in from right on hover */}
-              <div className="ps-img-wrap">
-                <img src={prog.img} alt="" loading="lazy" />
-                <div className="ps-img-overlay" />
+              {/* ── Image slide-in (desktop only) ── */}
+              <div
+                className="ps-img-wrap pointer-events-none absolute right-0 top-0 hidden h-full w-40 sm:block sm:w-52 md:w-72 lg:w-80"
+                style={{ zIndex: 2 }}
+              >
+                <img
+                  src={prog.img}
+                  alt=""
+                  loading="lazy"
+                  className="block h-full w-full object-cover"
+                  style={{ filter: "brightness(.88) contrast(1.05)" }}
+                />
+                {/* Fade overlay */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to right, rgba(242,232,213,.95) 0%, rgba(242,232,213,.2) 55%, transparent 100%)",
+                  }}
+                />
               </div>
 
-              <span className="ps-num">{prog.num}</span>
+              {/* ── Layout: num · info · meta ── */}
+              <div
+                className="relative flex w-full items-center gap-0 px-5 sm:px-8 md:px-10"
+                style={{ zIndex: 3 }}
+              >
+                {/* Number */}
+                <span
+                  className="font-playfair mr-4 hidden shrink-0 sm:mr-6 sm:block md:mr-8"
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: 400,
+                    color: "var(--ps-gold)",
+                    opacity: .6,
+                    letterSpacing: ".25em",
+                  }}
+                >
+                  {prog.num}
+                </span>
 
-              <div className="ps-info">
-                <span className="ps-name">{prog.name}</span>
-                <p className="ps-desc">{prog.desc}</p>
-              </div>
-
-              <div className="ps-meta">
-                <div className="ps-hrs">
-                  <span className="ps-hrs-val">{prog.hours}</span>
-                  <span className="ps-hrs-lbl">Hours</span>
-                </div>
-                <div className="ps-arrow">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                {/* Info */}
+                <div className="flex-1 py-6 sm:py-7">
+                  {/* Mobile number badge */}
+                  <span
+                    className="font-playfair mb-1 block sm:hidden"
+                    style={{
+                      fontSize: "11px",
+                      color: "var(--ps-gold)",
+                      opacity: .6,
+                      letterSpacing: ".25em",
+                    }}
                   >
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="13 6 19 12 13 18" />
-                  </svg>
+                    {prog.num}
+                  </span>
+
+                  <span
+                    className="ps-name font-playfair block leading-snug"
+                    style={{
+                      fontSize: "clamp(18px, 3vw, 24px)",
+                      fontWeight: 400,
+                      color: "var(--ps-ink)",
+                    }}
+                  >
+                    {prog.name}
+                  </span>
+                  <p
+                    className="ps-desc mt-1.5"
+                    style={{
+                      fontSize: "12.5px",
+                      color: "var(--ps-muted)",
+                      lineHeight: 1.85,
+                      fontWeight: 300,
+                      maxWidth: "520px",
+                    }}
+                  >
+                    {prog.desc}
+                  </p>
+                </div>
+
+                {/* Meta: hours + arrow */}
+                <div className="ml-4 flex shrink-0 items-center gap-3 sm:ml-6 sm:gap-5">
+                  {/* Hours — hidden on very small screens */}
+                  <div className="hidden flex-col items-end gap-0.5 xs:flex sm:flex">
+                    <span
+                      className="font-playfair leading-none"
+                      style={{
+                        fontSize: "clamp(20px, 3vw, 28px)",
+                        fontWeight: 400,
+                        color: "var(--ps-ink)",
+                      }}
+                    >
+                      {prog.hours}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "9px",
+                        letterSpacing: ".35em",
+                        textTransform: "uppercase",
+                        color: "var(--ps-muted)",
+                      }}
+                    >
+                      Hours
+                    </span>
+                  </div>
+
+                  {/* Arrow circle */}
+                  <div
+                    className="ps-arrow flex h-8 w-8 shrink-0 items-center justify-center rounded-full sm:h-9 sm:w-9"
+                    style={{ border: ".5px solid rgba(0,0,0,.15)" }}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-3 w-3 sm:h-3.5 sm:w-3.5"
+                      style={{ stroke: "var(--ps-ink2)" }}
+                    >
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="13 6 19 12 13 18" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </Link>
@@ -415,28 +358,49 @@ export default function ProgramsSection() {
         </div>
 
         {/* ── Footer stats ── */}
-        <div className="ps-footer ps-reveal" style={{ transitionDelay: ".4s" }}>
-          <div className="ps-stat">
-            <div className="ps-stat-v">5</div>
-            <span className="ps-stat-l">Programs</span>
-          </div>
-          <div className="ps-fdiv" />
-          <div className="ps-stat">
-            <div className="ps-stat-v">30</div>
-            <span className="ps-stat-l">Hrs / wk Full-time</span>
-          </div>
-          <div className="ps-fdiv" />
-          <div className="ps-stat">
-            <div className="ps-stat-v">16</div>
-            <span className="ps-stat-l">Hrs / wk Part-time</span>
-          </div>
-          <div className="ps-fdiv" />
-          <div className="ps-stat">
-            <div className="ps-stat-v">NJ</div>
-            <span className="ps-stat-l">N.J.A.C. 13:28</span>
-          </div>
+        <div
+          className="ps-reveal flex flex-wrap items-center justify-center gap-6 px-6 pt-12 sm:gap-10 sm:pt-14 md:gap-14 lg:pt-16"
+          style={{ transitionDelay: ".4s" }}
+        >
+          {[
+            { val: "5",  label: "Programs" },
+            { val: "30", label: "Hrs / wk Full-time" },
+            { val: "16", label: "Hrs / wk Part-time" },
+            { val: "NJ", label: "N.J.A.C. 13:28" },
+          ].map((stat, i, arr) => (
+            <div key={i} className="flex items-center gap-6 sm:gap-10 md:gap-14">
+              <div className="text-center">
+                <div
+                  className="font-playfair leading-none"
+                  style={{
+                    fontSize: "clamp(28px, 4vw, 36px)",
+                    fontWeight: 400,
+                    color: "var(--ps-ink)",
+                  }}
+                >
+                  {stat.val}
+                </div>
+                <span
+                  className="mt-1.5 block"
+                  style={{
+                    fontSize: "9px",
+                    letterSpacing: ".38em",
+                    textTransform: "uppercase",
+                    color: "var(--ps-muted)",
+                  }}
+                >
+                  {stat.label}
+                </span>
+              </div>
+              {i < arr.length - 1 && (
+                <div
+                  className="hidden h-10 sm:block"
+                  style={{ width: ".5px", background: "rgba(0,0,0,.1)" }}
+                />
+              )}
+            </div>
+          ))}
         </div>
-
       </section>
     </>
   );
