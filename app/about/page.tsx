@@ -29,8 +29,9 @@ export default function AboutPage() {
   return (
     <>
       <AboutHero />
-      <Mission />
       <Objectives />
+      <Mission />
+      
       <Staffs />
       <AboutCTA />
     </>

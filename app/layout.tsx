@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import FloatingSocialBar from "./components/FloatingSocialBar";
 
 export const metadata: Metadata = {
   title: "Cosmetology School of Jersey City",
@@ -17,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased">
         <Navbar />
-        <main>{children}</main>
+        <main>{children}<FloatingSocialBar /></main>
         <Footer />
       </body>
     </html>

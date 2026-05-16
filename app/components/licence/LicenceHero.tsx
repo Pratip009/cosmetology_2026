@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function ProgramsHero() {
+export default function LicenceHero() {
   const imgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function ProgramsHero() {
         .ah-img {
           position: absolute;
           inset: -10% 0;
-          background-image: url('https://images.unsplash.com/photo-1612883695890-f2ab22e65215?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+          background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
           background-size: cover;
           background-position: center;
           filter: brightness(.72) contrast(1.08);
@@ -154,7 +154,6 @@ export default function ProgramsHero() {
       `}</style>
 
       <section className="ah-section">
-
         {/* Image */}
         <div className="ah-img-panel">
           <div className="ah-img" ref={imgRef} />
@@ -164,17 +163,18 @@ export default function ProgramsHero() {
 
         {/* Content — only original copy */}
         <div className="ah-content">
-          <p className="ah-eyebrow">Programs Offered</p>
+          <p className="ah-eyebrow">Compliance & Standards</p>
 
           <h1 className="ah-title">
-            Five NJ<br />
-            <em>State-Approved Programs</em>
+            Licensing
+            <br />
+            <em>& Policies</em>
           </h1>
 
           <div className="ah-rule" />
 
           <p className="ah-body">
-            All programs comply with N.J.A.C. 13:28 regulations. Minimum 75% required on all exams. Taught in English.
+            All programs follow NJ State Board regulations under N.J.A.C. 13:28. NACCAS-compliant Satisfactory Academic Progress policy.
           </p>
         </div>
 

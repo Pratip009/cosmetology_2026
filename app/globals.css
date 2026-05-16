@@ -4,18 +4,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── DESIGN TOKENS ──────────────────────────────────────────── */
 :root {
-  --brand: #79644d;
+  /* Brand: warm mocha — used as accent only, never as bg on bg */
+  --brand:       #79644d;
   --brand-light: #a68b6a;
-  --brand-dark: #4e3f31;
-  --brand-pale: #f0e8df;
+  --brand-dark:  #4e3f31;
+  --brand-pale:  #f0e8df;
   --brand-cream: #faf6f1;
-  --gold: #c9a96e;
-  --gold-light: #e8d5b0;
-  --charcoal: #1a1714;
-  --warm-white: #fdfaf6;
+
+  /* Gold: reserved for highlights, rules, and shimmer accents */
+  --gold:        #c9a96e;
+  --gold-light:  #e8d5b0;
+  --gold-deep:   #9c7a42;   /* NEW — darker gold for on-light use */
+
+  /* Structure: anchor the palette with true deep tones */
+  --ebony:       #0d0b09;   /* NEW — true near-black anchor */
+  --charcoal:    #1a1714;
+  --slate:       #2d2820;   /* NEW — mid dark for cards on dark bg */
+
+  /* Light surfaces */
+  --warm-white:  #fdfaf6;
+  --cream:       #f7f2ea;   /* slightly deeper than brand-cream */
+  --mist:        #ede7de;   /* NEW — for subtle borders on light bg */
+
+  /* Text */
+  --text-primary:   #1a1714;
+  --text-secondary: #6b5b48;  /* NEW — warmer muted, not grey */
+  --text-inverted:  #fdfaf6;
 }
 
+/* ─── RESET ──────────────────────────────────────────────────── */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
@@ -26,41 +45,79 @@ body {
   overflow-x: hidden;
 }
 
-.font-display { font-family: 'Cormorant Garamond', serif; }
+/* ─── TYPOGRAPHY HELPERS ─────────────────────────────────────── */
+.font-display  { font-family: 'Cormorant Garamond', serif; }
 .font-headline { font-family: 'Playfair Display', serif; }
 
+/* ─── SCROLLBAR ──────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ebony); }
+::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 0; }
+
+/* ─── GLASS SURFACES ─────────────────────────────────────────── */
+/*
+  Rule: glass only works when it sits over a DARK background.
+  Never use .glass on light surfaces — use solid card classes instead.
+*/
 .glass {
-  background: rgba(250, 246, 241, 0.08);
+  background: rgba(253, 250, 246, 0.06);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(201, 169, 110, 0.2);
-}
-.glass-dark {
-  background: rgba(26, 23, 20, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(201, 169, 110, 0.15);
-}
-.glass-warm {
-  background: rgba(240, 232, 223, 0.12);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(201, 169, 110, 0.25);
+  border: 1px solid rgba(201, 169, 110, 0.18);
 }
 
+.glass-dark {
+  /* Proper dark glass — visible contrast over dark hero sections */
+  background: rgba(13, 11, 9, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(201, 169, 110, 0.2);
+}
+
+.glass-warm {
+  /* Warm tinted glass for mid-tone overlays */
+  background: rgba(78, 63, 49, 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 169, 110, 0.22);
+}
+
+/* ─── TEXT GRADIENTS ─────────────────────────────────────────── */
+/*
+  FIX: original shimmer looped the same two golds — invisible on cream.
+  New: anchor with near-white so the highlight reads on any bg.
+*/
 .text-gradient {
-  background: linear-gradient(135deg, #c9a96e 0%, #a68b6a 50%, #c9a96e 100%);
+  background: linear-gradient(
+    135deg,
+    var(--gold-deep) 0%,
+    var(--gold)      45%,
+    var(--gold-light) 70%,
+    var(--gold)      100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
+@theme inline {
+   --animate-float: float 3.2s ease-in-out infinite;
+  --animate-pop-in: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+ }
 @keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
 }
+
 .shimmer {
-  background: linear-gradient(90deg, #c9a96e 25%, #e8d5b0 50%, #c9a96e 75%);
+  /* FIX: wide contrast sweep — deep gold → near-white → deep gold */
+  background: linear-gradient(
+    90deg,
+    var(--gold-deep)  0%,
+    var(--gold)       30%,
+    #f5e6c8           55%,   /* near-white flash — the actual shimmer */
+    var(--gold)       70%,
+    var(--gold-deep)  100%
+  );
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -68,92 +125,237 @@ body {
   animation: shimmer 4s linear infinite;
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #1a1714; }
-::-webkit-scrollbar-thumb { background: #79644d; border-radius: 3px; }
+/* ─── DIVIDERS ───────────────────────────────────────────────── */
+.divider-gold {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
 
+/* ─── CARD INTERACTIONS ──────────────────────────────────────── */
+/*
+  FIX: original glow was gold-on-cream — unreadable.
+  Now: dark shadow base + gold border glow. Works on both light and dark.
+*/
+.card-hover {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.35s ease;
+}
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 20px 40px rgba(13, 11, 9, 0.25),      /* depth shadow — dark */
+    0 0 0 1px rgba(201, 169, 110, 0.4);     /* gold border glow */
+}
+
+/* ─── UNDERLINE HOVER ────────────────────────────────────────── */
 .hover-underline { position: relative; }
 .hover-underline::after {
   content: '';
   position: absolute;
   bottom: -2px; left: 0;
   width: 0; height: 1px;
-  background: #c9a96e;
+  background: var(--gold);
   transition: width 0.3s ease;
 }
 .hover-underline:hover::after { width: 100%; }
 
+/* ─── ANIMATIONS ─────────────────────────────────────────────── */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  50%       { transform: translateY(-8px); }
 }
+
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(201,169,110,0.3); }
-  50% { box-shadow: 0 0 40px rgba(201,169,110,0.6); }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
+
+/*
+  FIX: original pulse-glow glowed gold on warm-white — invisible.
+  Now two variants: one for dark bg, one for light bg.
+*/
+@keyframes pulse-glow-dark {
+  0%, 100% { box-shadow: 0 0 16px rgba(201, 169, 110, 0.25); }
+  50%       { box-shadow: 0 0 36px rgba(201, 169, 110, 0.55),
+                          0 0 64px rgba(201, 169, 110, 0.2); }
+}
+@keyframes pulse-glow-light {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(78, 63, 49, 0.15); }
+  50%       { box-shadow: 0 0 0 4px rgba(78, 63, 49, 0.3),
+                          0 8px 24px rgba(78, 63, 49, 0.2); }
+}
+
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to   { transform: rotate(360deg); }
 }
 
-.animate-float { animation: float 6s ease-in-out infinite; }
-.animate-fadeUp { animation: fadeUp 0.8s ease forwards; }
-.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
-.animate-spin-slow { animation: spin-slow 20s linear infinite; }
-
-.divider-gold {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #c9a96e, transparent);
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-.card-hover {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 24px 48px rgba(201,169,110,0.2), 0 0 0 1px rgba(201,169,110,0.3);
-}
+.animate-float      { animation: float 6s ease-in-out infinite; }
+.animate-fadeUp     { animation: fadeUp 0.7s cubic-bezier(0.4,0,0.2,1) forwards; }
+.animate-fadeIn     { animation: fadeIn 0.6s ease forwards; }
+.animate-pulse-glow { animation: pulse-glow-dark 3s ease-in-out infinite; }
+.animate-pulse-glow-light { animation: pulse-glow-light 3s ease-in-out infinite; }
+.animate-spin-slow  { animation: spin-slow 20s linear infinite; }
+.animate-marquee    { animation: marquee 24s linear infinite; }
 
+/* ─── BUTTONS ────────────────────────────────────────────────── */
+/*
+  FIX: original btn-primary was brown gradient on brown — no contrast.
+  New system: three clear button types with proper contrast ratios.
+*/
+
+/* Primary: dark anchor → clearly clickable on any bg */
 .btn-primary {
-  background: linear-gradient(135deg, #79644d, #a68b6a);
-  color: #fdfaf6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--ebony);
+  color: var(--gold-light);
   padding: 14px 32px;
   border-radius: 2px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-size: 13px;
-  transition: all 0.3s ease;
+  font-size: 12px;
+  border: 1px solid transparent;
+  transition: background 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease;
+  cursor: pointer;
   position: relative;
   overflow: hidden;
 }
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #c9a96e, #a68b6a);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.btn-primary:hover {
+  background: var(--brand-dark);
+  color: var(--warm-white);
+  border-color: var(--brand);
 }
-.btn-primary:hover::before { opacity: 1; }
-.btn-primary span { position: relative; z-index: 1; }
+.btn-primary:active {
+  background: var(--brand);
+}
 
+/* Brand: mocha fill — use on dark or cream backgrounds only */
+.btn-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--brand);
+  color: var(--warm-white);
+  padding: 14px 32px;
+  border-radius: 2px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  border: 1px solid var(--brand-light);
+  transition: background 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+}
+.btn-brand:hover {
+  background: var(--brand-dark);
+  border-color: var(--brand);
+}
+
+/* Outline: gold border — for dark backgrounds only */
 .btn-outline {
-  border: 1px solid rgba(201,169,110,0.6);
-  color: #c9a96e;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(201, 169, 110, 0.55);
+  color: var(--gold);
   padding: 14px 32px;
   border-radius: 2px;
   font-weight: 400;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-size: 13px;
-  transition: all 0.3s ease;
+  font-size: 12px;
+  transition: background 0.25s ease,
+              border-color 0.25s ease,
+              color 0.25s ease;
+  cursor: pointer;
 }
 .btn-outline:hover {
-  background: rgba(201,169,110,0.1);
-  border-color: #c9a96e;
+  background: rgba(201, 169, 110, 0.1);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+/* Ghost: no border, text-only — use sparingly for tertiary actions */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--brand);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+.btn-ghost:hover { color: var(--brand-dark); }
+
+/* ─── UTILITY CARDS ──────────────────────────────────────────── */
+/* Solid card for light sections */
+.card-light {
+  background: var(--cream);
+  border: 1px solid var(--mist);
+  border-radius: 2px;
+}
+
+/* Card for dark sections */
+.card-dark {
+  background: var(--slate);
+  border: 1px solid rgba(201, 169, 110, 0.15);
+  border-radius: 2px;
+}
+
+/* ─── FORM ELEMENTS ──────────────────────────────────────────── */
+.input-underline {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--mist);
+  padding: 12px 0;
+  font-size: 14px;
+  color: var(--charcoal);
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.input-underline::placeholder { color: var(--text-secondary); }
+.input-underline:focus { border-bottom-color: var(--brand); }
+
+/* ─── SECTION SPACING ────────────────────────────────────────── */
+.section-pad { padding: 80px 48px; }
+.section-pad-sm { padding: 48px 48px; }
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0) translateX(-16px); opacity: 0; }
+  70% { transform: scale(1.1) translateX(0); opacity: 1; }
+  100% { transform: scale(1) translateX(0); opacity: 1; }
 }

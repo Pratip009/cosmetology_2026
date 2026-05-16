@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function ProgramsHero() {
+export default function TuitionHero() {
   const imgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function ProgramsHero() {
         .ah-img {
           position: absolute;
           inset: -10% 0;
-          background-image: url('https://images.unsplash.com/photo-1612883695890-f2ab22e65215?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+          background-image: url('https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
           background-size: cover;
           background-position: center;
           filter: brightness(.72) contrast(1.08);
@@ -164,17 +164,19 @@ export default function ProgramsHero() {
 
         {/* Content — only original copy */}
         <div className="ah-content">
-          <p className="ah-eyebrow">Programs Offered</p>
+          <p className="ah-eyebrow">Investment</p>
 
           <h1 className="ah-title">
-            Five NJ<br />
-            <em>State-Approved Programs</em>
+                        Tuition 
+<br />&
+            <em>Fees</em>
           </h1>
 
           <div className="ah-rule" />
 
           <p className="ah-body">
-            All programs comply with N.J.A.C. 13:28 regulations. Minimum 75% required on all exams. Taught in English.
+           Transparent pricing for all five programs. Contact us for
+            information on payment plans and financial assistance options.
           </p>
         </div>
 

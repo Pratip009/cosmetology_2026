@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
-const ProgramCTA = () => {
+const TutionCTA = () => {
   return (
     <>
       <style>{`
@@ -198,7 +198,7 @@ const ProgramCTA = () => {
 
       <section className="cta-section bg-brand">
         <div className="cta-grid" />
-        <div className="cta-watermark">Enroll</div>
+        <div className="cta-watermark">Questions</div>
         <div className="cta-corner tl" />
         <div className="cta-corner br" />
 
@@ -209,8 +209,8 @@ const ProgramCTA = () => {
               <span className="cta-eyebrow-text">Next Step</span>
             </div>
             <h2 className="cta-heading">
-              <span>Ready to</span>
-              Enroll?
+              <span>Have any</span>
+              Questions?
             </h2>
           </div>
 
@@ -226,4 +226,4 @@ const ProgramCTA = () => {
   )
 }
 
-export default ProgramCTA
+export default TutionCTA
