@@ -1,17 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Phone, Scissors, Menu, X } from 'lucide-react';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Phone, Scissors, Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
-  { href: '/programs', label: 'Programs' },
-  { href: '/tuition', label: 'Tuition & Fees' },
-  { href: '/licensing', label: 'Licensing & Policies' },
-  { href: '/contact', label: 'Contact' },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/programs", label: "Programs" },
+  { href: "/tuition", label: "Tuition & Fees" },
+  { href: "/licensing", label: "Licensing & Policies" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
@@ -21,14 +22,16 @@ export default function Navbar() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   return (
@@ -320,22 +323,18 @@ export default function Navbar() {
         }
       `}</style>
 
-      <header className={`nb-header${scrolled ? ' nb-scrolled' : ''}`}>
+      <header className={`nb-header${scrolled ? " nb-scrolled" : ""}`}>
         <div className="nb-inner">
-
           {/* Logo */}
           <Link href="/" className="nb-logo">
-            <div className="nb-logo-mark">
-              <div className="nb-logo-ring" />
-              <div className="nb-logo-ring-inner" />
-              <div className="nb-logo-icon">
-                <Scissors />
-              </div>
-            </div>
-            <div className="nb-logo-text">
-              <span className="nb-logo-name">CSJC</span>
-              <span className="nb-logo-sub">Jersey City</span>
-            </div>
+            <Image
+              src="/logoo.png"
+              alt="CSJC Logo"
+              width={60}
+              height={60}
+              className="nb-logo-image"
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}
@@ -345,7 +344,7 @@ export default function Navbar() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className={pathname === href ? 'nb-active' : ''}
+                    className={pathname === href ? "nb-active" : ""}
                   >
                     {label}
                   </Link>
@@ -364,7 +363,7 @@ export default function Navbar() {
           <button
             className="nb-toggle"
             onClick={() => setOpen(!open)}
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? "Close menu" : "Open menu"}
           >
             {open ? <X /> : <Menu />}
           </button>
@@ -372,7 +371,7 @@ export default function Navbar() {
       </header>
 
       {/* Mobile drawer */}
-      <div className={`nb-drawer${open ? ' nb-open' : ''}`}>
+      <div className={`nb-drawer${open ? " nb-open" : ""}`}>
         <div className="nb-drawer-backdrop" onClick={() => setOpen(false)} />
         <div className="nb-drawer-panel">
           <div className="nb-drawer-links">
@@ -380,7 +379,7 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
-                className={`nb-drawer-link${pathname === href ? ' nb-active' : ''}`}
+                className={`nb-drawer-link${pathname === href ? " nb-active" : ""}`}
                 onClick={() => setOpen(false)}
               >
                 <span>{label}</span>
