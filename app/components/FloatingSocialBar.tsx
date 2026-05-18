@@ -41,7 +41,7 @@ const socialLinks: SocialLink[] = [
   {
     id: "facebook",
     label: "Facebook",
-    href: "https://facebook.com",
+    href: "https://www.facebook.com/profile.php?id=61576106982513",
     icon: <FacebookIcon />,
     color: "bg-[#1877F2]",
     hoverText: "text-[#1877F2]",
@@ -51,7 +51,7 @@ const socialLinks: SocialLink[] = [
   {
     id: "instagram",
     label: "Instagram",
-    href: "https://instagram.com",
+    href: "https://www.instagram.com/cosmetologyschooljc/",
     icon: <InstagramIcon />,
     color: "bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888]",
     hoverText: "text-[#dc2743]",
@@ -61,7 +61,7 @@ const socialLinks: SocialLink[] = [
   {
     id: "linkedin",
     label: "LinkedIn",
-    href: "https://linkedin.com",
+    href: "https://www.linkedin.com/company/cosmetology-school-of-jersey-city/about/?viewAsMember=true",
     icon: <LinkedInIcon />,
     color: "bg-[#0A66C2]",
     hoverText: "text-[#0A66C2]",
@@ -71,7 +71,7 @@ const socialLinks: SocialLink[] = [
   {
     id: "tiktok",
     label: "TikTok",
-    href: "https://tiktok.com",
+    href: "https://www.tiktok.com/@cosmetologyschoolofjc",
     icon: <TikTokIcon />,
     color: "bg-[#010101]",
     hoverText: "text-[#555]",
