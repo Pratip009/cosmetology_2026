@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/about", label: "About Us" },
   { href: "/programs", label: "Programs" },
   { href: "/tuition", label: "Tuition & Fees" },
+    { href: "/calendar", label: "Calendar" },
   { href: "/licensing", label: "Licensing & Policies" },
   { href: "/contact", label: "Contact" },
 ];
