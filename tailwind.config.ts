@@ -9,6 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        stone: {
+      850: "#1e1c1a",
+    },
         brand: {
           DEFAULT: '#79644d',
           light: '#a68b6a',
